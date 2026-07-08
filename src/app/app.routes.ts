@@ -10,7 +10,7 @@ export const routes: Routes = [
   {
     path: 'main',
     loadComponent: () => import('./features/main/main.page').then(m => m.MainPage),
-    childRoutes: [
+    children: [
       {
         path: 'home',
         loadComponent: () => import('./features/home/home.page').then(m => m.HomePage),
@@ -30,19 +30,11 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'main',
-    loadComponent: () => import('./features/main/main.page').then( m => m.MainPage)
+    path: 'profile',
+    loadComponent: () => import('./features/profile/profile.page').then(m => m.ProfilePage)
   },
   {
-    path: 'profile',
-    loadComponent: () => import('./features/profile/profile.page').then( m => m.ProfilePage)
-  },
-  {
-    path: 'profile',
-    loadComponent: () => import('./features/profile/profile.page').then( m => m.ProfilePage)
-  },
-  {
-    path: 'profile',
-    loadComponent: () => import('./features/profile/profile.page').then( m => m.ProfilePage)
+    path: 'header',
+    loadComponent: () => import('./shared/components/header/header.page').then( m => m.HeaderPage)
   },
 ];
