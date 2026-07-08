@@ -35,6 +35,10 @@ export const routes: Routes = [
   },
   {
     path: 'header',
-    loadComponent: () => import('./shared/components/header/header.page').then( m => m.HeaderPage)
+    loadComponent: () => import('./shared/components/header/header.component').then(m => m.HeaderComponent)
+  },
+  {
+    path: 'card',
+    loadComponent: () => import('./shared/components/card/card.page').then( m => m.CardPage)
   },
 ];
