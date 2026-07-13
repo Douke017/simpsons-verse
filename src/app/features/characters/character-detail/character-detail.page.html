@@ -1,0 +1,151 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="detail-toolbar">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/main/characters">
+        <span class="material-symbols-outlined header-back-icon">arrow_back</span>
+      </ion-button>
+    </ion-buttons>
+    
+    <h1 class="toolbar-brand-title">
+      @if (character()) {
+        {{ character()!.name }}
+      } @else {
+        Detalle
+      }
+    </h1>
+    
+    <ion-buttons slot="end">
+      <ion-button (click)="shareCharacter()">
+        <span class="material-symbols-outlined header-share-icon">share</span>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="character-detail-content-container">
+  @if (isLoading()) {
+    <div class="detail-loading-wrapper">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Cargando información del personaje...</p>
+    </div>
+  } @else if (error()) {
+    <div class="detail-error-wrapper">
+      <p class="error-msg">{{ error() }}</p>
+      <button class="btn-retry" routerLink="/main/characters">Volver al catálogo</button>
+    </div>
+  } @else if (character()) {
+    <main class="character-detail-main">
+
+      <!-- Hero Section -->
+      <section class="character-hero-section">
+        <div class="character-portrait-wrapper">
+          <img 
+            [src]="character()!.portraitPath | simpsonsImageUrl" 
+            [alt]="character()!.name" 
+            class="character-portrait-img" />
+        </div>
+        <div class="character-hero-overlay"></div>
+        
+        <!-- Floating Name & Status Badges -->
+        <div class="character-hero-info">
+          <div class="status-badges-row">
+            
+            <!-- Dynamic Status Badge -->
+            @if (character()!.status === 'Alive') {
+              <span class="badge-status status-alive">
+                <span class="pulse-dot"></span>
+                VIVO
+              </span>
+            } @else if (character()!.status === 'Deceased') {
+              <span class="badge-status status-deceased">
+                <span class="static-dot"></span>
+                FALLECIDO
+              </span>
+            } @else {
+              <span class="badge-status status-unknown">
+                <span class="static-dot"></span>
+                DESCONOCIDO
+              </span>
+            }
+
+            <span class="badge-type">RECURRENTE</span>
+          </div>
+
+          <h2 class="character-display-name">{{ character()!.name }}</h2>
+          <p class="character-location-text">Springfield, USA</p>
+        </div>
+      </section>
+
+      <!-- Bento Info Grid & Detail Cards -->
+      <section class="detail-cards-section max-w-4xl mx-auto px-margin-mobile">
+        <div class="bento-details-grid">
+          
+          <!-- Age Bento Cell -->
+          <div class="bento-card-cell flex-center">
+            <span class="material-symbols-outlined cell-icon-gold">cake</span>
+            <span class="cell-label-text">Edad</span>
+            <span class="cell-value-text">{{ calculatedAge() }}</span>
+          </div>
+
+          <!-- Gender Bento Cell -->
+          <div class="bento-card-cell flex-center">
+            <span class="material-symbols-outlined cell-icon-gold">
+              {{ character()!.gender === 'Male' ? 'male' : (character()!.gender === 'Female' ? 'female' : 'person') }}
+            </span>
+            <span class="cell-label-text">Género</span>
+            <span class="cell-value-text">{{ character()!.gender === 'Male' ? 'Masculino' : (character()!.gender === 'Female' ? 'Femenino' : character()!.gender) }}</span>
+          </div>
+
+          <!-- Occupation Bento Cell -->
+          <div class="bento-card-cell cell-occupation col-span-mobile-2">
+            <div class="cell-occupation-header">
+              <span class="material-symbols-outlined cell-icon-gold">factory</span>
+              <span class="cell-label-text">Ocupación</span>
+            </div>
+            <span class="cell-value-text occupation-title">{{ character()!.occupation || 'Desempleado' }}</span>
+            <p class="occupation-subtext">Springfield</p>
+          </div>
+
+        </div>
+
+        <!-- Memorable Phrases Section -->
+        <div class="phrases-container">
+          <div class="phrases-header-row">
+            <h3 class="section-title-text">Frases Memorables</h3>
+            <span class="phrases-count-badge">{{ character()!.phrases.length }} EN TOTAL</span>
+          </div>
+
+          <div class="phrases-quotes-list">
+            @for (phrase of character()!.phrases; track phrase; let isFirst = $first) {
+              <div class="quote-card-item group">
+                <p class="quote-text-italic">"{{ phrase }}"</p>
+                <p class="quote-subtext-attribution">Citado habitualmente por {{ character()!.name }}.</p>
+              </div>
+            } @empty {
+              <div class="phrases-empty-state">
+                <p class="empty-msg">Este personaje se expresa a través de acciones memorables.</p>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Family Ties Section -->
+        <div class="family-ties-container">
+          <h3 class="section-title-text border-bottom-indicator">Vínculos Familiares</h3>
+          <div class="family-horizontal-carousel hide-scrollbar">
+            @for (relative of familyTies(); track relative.name) {
+              <div class="family-relative-slide flex-center">
+                <div class="relative-avatar-wrapper">
+                  <img [src]="relative.image | simpsonsImageUrl" [alt]="relative.name" class="relative-avatar-img" />
+                </div>
+                <span class="relative-name-text">{{ relative.name }}</span>
+                <span class="relative-role-badge">{{ relative.role }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+      </section>
+    </main>
+  }
+</ion-content>

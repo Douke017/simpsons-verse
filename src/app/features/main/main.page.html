@@ -5,43 +5,48 @@
     contentId="main-content"
     type="overlay">
 
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>Simpsons Explorer</ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content>
-
-      <ion-list>
-
-        <ion-list-header>Menú</ion-list-header>
-        <ion-note>Explora el universo de Los Simpson</ion-note>
-
+    <ion-content class="menu-content">
+      <ion-list class="menu-items-list">
+        <ion-list-header class="menu-section-header">Menú</ion-list-header>
         @for (p of appPages; track p.title) {
           <ion-menu-toggle auto-hide="false">
             <ion-item
               [routerLink]="p.url"
               routerDirection="root"
+              routerLinkActive="active-menu-item"
               lines="none"
-              detail="false">
+              detail="false"
+              class="menu-item-link">
               <ion-icon
                 slot="start"
-                [name]="p.icon">
+                [name]="p.icon"
+                class="menu-item-icon">
               </ion-icon>
-              <ion-label>
+              <ion-label class="menu-item-label">
                 {{ p.title }}
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
         }
-
       </ion-list>
-
     </ion-content>
-
   </ion-menu>
 
-  <ion-router-outlet id="main-content"></ion-router-outlet>
+  <!-- Content panel of split pane -->
+  <div id="main-content" class="ion-page">
+    <div class="content-container">
+      <ion-router-outlet></ion-router-outlet>
+    </div>
+
+    <!-- Bottom Navigation Bar for Mobile viewports -->
+    <nav class="bottom-nav-bar">
+      @for (p of appPages; track p.title) {
+        <a [routerLink]="p.url" routerLinkActive="active-tab" class="nav-item">
+          <ion-icon [name]="p.icon"></ion-icon>
+          <span>{{ p.title }}</span>
+        </a>
+      }
+    </nav>
+  </div>
 
 </ion-split-pane>

@@ -13,9 +13,15 @@ export class SimpsonsApiEpisodeRepository implements EpisodeRepository {
 
   constructor(private readonly http: HttpClient) {}
 
-  getEpisodes(): Observable<Episode[]> {
-    return this.http.get<SimpsonsApiEpisodeResponse>(this.endpoint).pipe(
+  getEpisodes(page: number = 1): Observable<Episode[]> {
+    return this.http.get<SimpsonsApiEpisodeResponse>(`${this.endpoint}?page=${page}`).pipe(
       map((response) => response.results.map(mapSimpsonsApiEpisodeToDomain)),
+    );
+  }
+
+  getEpisodeById(id: number): Observable<Episode> {
+    return this.http.get<any>(`${this.endpoint}/${id}`).pipe(
+      map(mapSimpsonsApiEpisodeToDomain)
     );
   }
 }

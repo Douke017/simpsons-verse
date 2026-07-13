@@ -1,33 +1,88 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Locations</ion-title>
+    <h1 class="toolbar-brand-title"><span>Springfield</span> Explorer</h1>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/main/characters">
+        <span class="material-symbols-outlined">search</span>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Locations</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="locations-content-container">
+  <main class="locations-main-layout max-w-container-max mx-auto pb-24">
 
-  <div class="locations-grid">
-    @for (location of locations(); track location.id) {
-      <app-card
-        [title]="location.title"
-        [subtitle]="location.subtitle"
-        [content]="location.content"
-        [image]="location.imagePath | simpsonsImageUrl"
-        [alt]="location.alt">
-      </app-card>
-    } @empty {
-      <div class="loading-container">
-        <ion-spinner name="crescent" color="primary"></ion-spinner>
-        <p>Cargando ubicaciones...</p>
+    <!-- Search Section -->
+    <section class="locations-search-section">
+      <h2 class="font-headline-lg font-title">Descubre Springfield</h2>
+      <div class="search-bar-wrapper">
+        <span class="material-symbols-outlined search-bar-icon">search</span>
+        <input 
+          type="text" 
+          class="search-bar-input" 
+          placeholder="Busca ubicaciones, puntos de interés..." 
+          [value]="searchQuery()"
+          (input)="onSearchChange($event)" />
       </div>
-    }
-  </div>
+    </section>
+
+    <!-- Filter Chips list -->
+    <div class="filter-chips-container hide-scrollbar">
+      @for (category of categories; track category) {
+        <button 
+          class="filter-chip-btn" 
+          [class.active-chip]="selectedCategory() === category"
+          (click)="selectCategory(category)">
+          {{ category === 'All' ? 'Todas las Ubicaciones' : category }}
+        </button>
+      }
+    </div>
+
+    <!-- Bento Grid (Featured + Reusable Standard Cards) -->
+    <div class="locations-bento-grid">
+      @for (location of filteredLocations(); track location.id; let isFirst = $first) {
+        @if (isFirst) {
+          <!-- Featured Card: Spans col-span-2 or full row -->
+          <div class="bento-card-featured group" (click)="viewLocationDetails(location.id)">
+            <div class="featured-image-wrapper">
+              <img [src]="location.imagePath | simpsonsImageUrl" [alt]="location.alt" class="featured-image" />
+              <div class="featured-overlay"></div>
+              <span class="featured-badge">{{ location.subtitle }}</span>
+            </div>
+            <div class="featured-details">
+              <h3 class="featured-card-title">{{ location.title }}</h3>
+              <p class="featured-card-description">{{ location.content }}</p>
+              <button class="featured-action-btn">Ver Detalles</button>
+            </div>
+          </div>
+        } @else {
+          <!-- Standard Cards -->
+          <app-card
+            class="bento-card-standard"
+            (click)="viewLocationDetails(location.id)"
+            [title]="location.title"
+            [subtitle]="location.subtitle"
+            [content]="location.content"
+            [image]="location.imagePath | simpsonsImageUrl"
+            [alt]="location.alt">
+          </app-card>
+        }
+      } @empty {
+        <div class="locations-empty-state">
+          <ion-spinner name="crescent" color="primary"></ion-spinner>
+          <p>No se encontraron ubicaciones...</p>
+        </div>
+      }
+    </div>
+
+    <!-- Infinite Scroll container -->
+    <ion-infinite-scroll (ionInfinite)="loadNextPage($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más ubicaciones...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+  </main>
 </ion-content>

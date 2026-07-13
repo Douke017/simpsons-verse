@@ -4,6 +4,7 @@ export interface SimpsonsApiLocationDto {
   image_path: string;
   town: string;
   use: string;
+  description?: string;
 }
 
 export interface SimpsonsApiLocationResponse {

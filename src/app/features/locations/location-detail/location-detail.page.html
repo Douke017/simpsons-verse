@@ -1,0 +1,93 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="detail-toolbar">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/main/locations">
+        <span class="material-symbols-outlined header-back-icon">arrow_back</span>
+      </ion-button>
+    </ion-buttons>
+    
+    <h1 class="toolbar-brand-title">
+      @if (location()) {
+        {{ location()!.name }}
+      } @else {
+        Detalle
+      }
+    </h1>
+    
+    <ion-buttons slot="end">
+      <ion-button (click)="shareLocation()">
+        <span class="material-symbols-outlined header-share-icon">share</span>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="locations-content-container">
+  @if (isLoading()) {
+    <div class="detail-loading-wrapper">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Cargando información de la ubicación...</p>
+    </div>
+  } @else if (error()) {
+    <div class="detail-error-wrapper">
+      <p class="error-msg">{{ error() }}</p>
+      <button class="btn-retry" routerLink="/main/locations">Volver a ubicaciones</button>
+    </div>
+  } @else if (location()) {
+    <main class="locations-main-layout max-w-container-max mx-auto pb-24">
+
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div 
+          class="hero-background-image" 
+          [style.background-image]="'url(' + (location()!.imagePath | simpsonsImageUrl) + ')'"
+          [attr.aria-label]="location()!.name">
+        </div>
+        <div class="hero-gradient-overlay"></div>
+        <div class="hero-caption-wrapper">
+          <div class="hero-badges-row">
+            <span class="badge-season-code">{{ location()!.use }}</span>
+            <span class="badge-airdate">{{ location()!.town }}</span>
+          </div>
+          <h2 class="hero-display-title">{{ location()!.name }}</h2>
+        </div>
+      </section>
+
+      <!-- Content Grid: Details Column + Sidebar Column -->
+      <div class="details-content-grid">
+        
+        <!-- Left Column: Synopsis & Details -->
+        <div class="details-left-column">
+          <div class="synopsis-section">
+            <h3 class="section-heading-indicator">Historia & Detalles</h3>
+            <p class="synopsis-text leading-relaxed">
+              {{ location()!.description || 'Este emblemático punto de interés de la ciudad de Springfield es una parte fundamental de la vida de los ciudadanos y forma parte del rico universo animado de Los Simpson.' }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Column: Rating Stats -->
+        <div class="details-right-column">
+          
+          <!-- Rating & Production details -->
+          <div class="sidebar-glass-card">
+            <h3 class="sidebar-card-label">Datos Generales</h3>
+            
+            <div class="production-stats-grid">
+              <div class="stat-cell">
+                <p class="stat-label">Ciudad</p>
+                <p class="stat-value-writer">{{ location()!.town }}</p>
+              </div>
+              <div class="stat-cell text-right">
+                <p class="stat-label">Propósito / Uso</p>
+                <p class="stat-value-writer">{{ location()!.use }}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  }
+</ion-content>

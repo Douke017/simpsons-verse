@@ -161,3 +161,50 @@ body {
     display: none;          /* Safari/Chrome */
   }
 }
+
+/* Enforce header layout styling app-wide to match design screenshot */
+ion-toolbar,
+ion-toolbar.ion-color,
+ion-toolbar.ion-color-primary,
+ion-toolbar[color="primary"] {
+  --background: #000000 !important;
+  --color: #fed41d !important;
+  --ion-color-base: #000000 !important;
+  --ion-color-contrast: #fed41d !important;
+  --border-style: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  ion-title, .toolbar-brand-title, .toolbar-title, h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-weight: 800 !important;
+    color: #fed41d !important;
+    font-size: 1.35rem !important;
+    letter-spacing: -0.03em !important;
+
+    span {
+      color: #fed41d !important;
+    }
+  }
+
+  ion-menu-button {
+    --color: #fed41d !important;
+    color: #fed41d !important;
+  }
+  
+  ion-button {
+    --color: #fed41d !important;
+    color: #fed41d !important;
+  }
+
+  .material-symbols-outlined {
+    color: #fed41d !important;
+  }
+}
+
+/* Responsive Navigation overrides */
+@media (max-width: 767px) {
+  ion-menu-button {
+    display: none !important;
+  }
+}
+

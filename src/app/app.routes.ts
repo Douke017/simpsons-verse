@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { characterProviders } from './features/characters/characters.providers';
 import { episodeProviders } from './features/episodes/episodes.providers';
 import { locationProviders } from './features/locations/locations.providers';
+import { homeProviders } from './features/home/home.providers';
 
 export const routes: Routes = [
   {
@@ -16,22 +17,50 @@ export const routes: Routes = [
     children: [
       {
         path: 'home',
+        providers: homeProviders,
         loadComponent: () => import('./features/home/home.page').then(m => m.HomePage),
       },
       {
         path: 'characters',
         providers: characterProviders,
-        loadComponent: () => import('./features/characters/characters.page').then(m => m.CharactersPage),
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./features/characters/characters.page').then(m => m.CharactersPage),
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('./features/characters/character-detail/character-detail.page').then(m => m.CharacterDetailPage),
+          }
+        ]
       },
       {
         path: 'episodes',
         providers: episodeProviders,
-        loadComponent: () => import('./features/episodes/episodes.page').then(m => m.EpisodesPage),
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./features/episodes/episodes.page').then(m => m.EpisodesPage),
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('./features/episodes/episode-detail/episode-detail.page').then(m => m.EpisodeDetailPage),
+          }
+        ]
       },
       {
         path: 'locations',
         providers: locationProviders,
-        loadComponent: () => import('./features/locations/locations.page').then(m => m.LocationsPage),
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./features/locations/locations.page').then(m => m.LocationsPage),
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('./features/locations/location-detail/location-detail.page').then(m => m.LocationDetailPage),
+          }
+        ]
       },
     ],
   },

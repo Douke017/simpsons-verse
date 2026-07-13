@@ -1,87 +1,124 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Simpsons Explorer</ion-title>
+    <h1 class="toolbar-brand-title"><span>Springfield</span> Explorer</h1>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/main/characters">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="home-content">
-  <div class="hero-section">
-    <div class="hero-text">
-      <h1>¡Bienvenido a Springfield!</h1>
-      <p>Explora el universo de Los Simpson con datos completos de personajes, episodios y lugares emblemáticos.</p>
-    </div>
-  </div>
+<ion-content [fullscreen]="true" class="home-content-container">
+  <main class="main-layout pb-24">
+    
+    <!-- Hero Section: Iconic Characters Carousel -->
+    <section class="home-section hero-section-carrusel">
+      <div class="section-header">
+        <div>
+          <span class="font-label-bold label-eyebrow text-secondary">Habitantes</span>
+          <h2 class="font-headline-lg font-heading">Personajes Icónicos</h2>
+        </div>
+        <button class="see-all-btn" routerLink="/main/characters">VER TODO</button>
+      </div>
 
-  <ion-grid class="dashboard-grid">
-    <ion-row>
-      <!-- Characters Shortcut Card -->
-      <ion-col size="12" size-md="4">
-        <ion-card class="dashboard-card characters-card">
-          <div class="card-icon-container">
+      <div class="carousel-horizontal hide-scrollbar snap-container">
+        @for (character of characters(); track character.id) {
+          <div class="carousel-item character-slide snap-element" (click)="viewCharacterDetails(character.id)">
+            <div class="slide-image-wrapper">
+              <img [src]="character.portraitPath | simpsonsImageUrl" [alt]="character.name" class="slide-image" />
+              <div class="hero-gradient">
+                <h3 class="slide-title">{{ character.name }}</h3>
+                <p class="slide-subtitle">{{ character.occupation || character.status }}</p>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="carousel-spinner-container">
+            <ion-spinner name="crescent" color="secondary"></ion-spinner>
+            <p>Cargando Springfield...</p>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Bento Grid Navigation Section -->
+    <section class="home-section bento-section">
+      <div class="section-header-compact">
+        <span class="font-label-bold label-eyebrow text-primary">Universo</span>
+        <h2 class="font-headline-lg font-heading">Explorar Springfield</h2>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Characters Bento Cell -->
+        <div class="bento-cell cell-characters" routerLink="/main/characters">
+          <div class="cell-icon-badge badge-indigo">
             <ion-icon name="people"></ion-icon>
           </div>
-          <ion-card-header>
-            <ion-card-title>Personajes</ion-card-title>
-            <ion-card-subtitle>Conoce a los habitantes</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            Consulta biografías, ocupaciones, edades y las frases más icónicas de Homero, Bart, Marge y más.
-          </ion-card-content>
-          <div class="card-footer">
-            <ion-button fill="clear" routerLink="/main/characters" routerDirection="forward">
-              Explorar
-              <ion-icon slot="end" name="arrow-forward"></ion-icon>
-            </ion-button>
+          <div class="cell-details">
+            <h4 class="cell-title title-indigo">Personajes</h4>
+            <p class="cell-description">Conoce a los más de 500 habitantes</p>
           </div>
-        </ion-card>
-      </ion-col>
+          <span class="cell-link-arrow"><ion-icon name="arrow-forward"></ion-icon></span>
+        </div>
 
-      <!-- Episodes Shortcut Card -->
-      <ion-col size="12" size-md="4">
-        <ion-card class="dashboard-card episodes-card">
-          <div class="card-icon-container">
+        <!-- Episodes Bento Cell -->
+        <div class="bento-cell cell-episodes" routerLink="/main/episodes">
+          <div class="cell-icon-badge badge-yellow">
             <ion-icon name="tv"></ion-icon>
           </div>
-          <ion-card-header>
-            <ion-card-title>Episodios</ion-card-title>
-            <ion-card-subtitle>Temporadas y resúmenes</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            Busca tus episodios favoritos y revive la sinopsis de las historias más locas de Springfield.
-          </ion-card-content>
-          <div class="card-footer">
-            <ion-button fill="clear" routerLink="/main/episodes" routerDirection="forward">
-              Explorar
-              <ion-icon slot="end" name="arrow-forward"></ion-icon>
-            </ion-button>
+          <div class="cell-details">
+            <h4 class="cell-title title-yellow">Episodios</h4>
+            <p class="cell-description">Más de 34 temporadas de risas</p>
           </div>
-        </ion-card>
-      </ion-col>
+          <span class="cell-link-arrow"><ion-icon name="arrow-forward"></ion-icon></span>
+        </div>
 
-      <!-- Locations Shortcut Card -->
-      <ion-col size="12" size-md="4">
-        <ion-card class="dashboard-card locations-card">
-          <div class="card-icon-container">
+        <!-- Locations Bento Cell -->
+        <div class="bento-cell cell-locations" routerLink="/main/locations">
+          <div class="cell-icon-badge badge-orange">
             <ion-icon name="map"></ion-icon>
           </div>
-          <ion-card-header>
-            <ion-card-title>Ubicaciones</ion-card-title>
-            <ion-card-subtitle>Lugares legendarios</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            Desde la taberna de Moe hasta la planta nuclear. Descubre los sitios donde todo sucede.
-          </ion-card-content>
-          <div class="card-footer">
-            <ion-button fill="clear" routerLink="/main/locations" routerDirection="forward">
-              Explorar
-              <ion-icon slot="end" name="arrow-forward"></ion-icon>
-            </ion-button>
+          <div class="cell-details">
+            <h4 class="cell-title title-orange">Lugares</h4>
+            <p class="cell-description">Explora los sitios legendarios</p>
           </div>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+          <span class="cell-link-arrow"><ion-icon name="arrow-forward"></ion-icon></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Episodes Carousel Section -->
+    <section class="home-section recent-episodes-section">
+      <div class="section-header">
+        <div>
+          <span class="font-label-bold label-eyebrow text-tertiary">Recientes</span>
+          <h2 class="font-headline-lg font-heading">Guía de Episodios</h2>
+        </div>
+        <button class="see-all-btn" routerLink="/main/episodes">VER TODO</button>
+      </div>
+
+      <div class="carousel-horizontal hide-scrollbar">
+        @for (episode of episodes(); track episode.id) {
+          <div class="carousel-item episode-slide" (click)="viewEpisodeDetails(episode.id)">
+            <div class="episode-image-wrapper">
+              <img [src]="episode.imagePath | simpsonsImageUrl" [alt]="episode.name" class="episode-image" />
+              <div class="episode-tint-overlay"></div>
+              <span class="episode-code-badge">S{{ episode.season }} E{{ episode.episodeNumber }}</span>
+            </div>
+            <h3 class="episode-card-title">{{ episode.name }}</h3>
+            <p class="episode-card-synopsis">{{ episode.synopsis }}</p>
+          </div>
+        } @empty {
+          <div class="carousel-spinner-container">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+          </div>
+        }
+      </div>
+    </section>
+
+  </main>
 </ion-content>

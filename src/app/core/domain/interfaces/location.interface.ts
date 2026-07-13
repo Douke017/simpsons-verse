@@ -4,4 +4,5 @@ export interface Location {
   imagePath: string;
   town: string;
   use: string;
+  description?: string;
 }

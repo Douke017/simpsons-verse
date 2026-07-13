@@ -4,10 +4,10 @@ import { Location } from '../../domain/interfaces/location.interface';
 import { LOCATION_REPOSITORY, LocationRepository } from '../../domain/ports/location.repository.port';
 
 @Injectable()
-export class GetLocationsUseCase {
+export class GetLocationByIdUseCase {
   constructor(@Inject(LOCATION_REPOSITORY) private readonly repository: LocationRepository) {}
 
-  execute(page: number = 1): Observable<Location[]> {
-    return this.repository.getLocations(page);
+  execute(id: number): Observable<Location> {
+    return this.repository.getLocationById(id);
   }
 }

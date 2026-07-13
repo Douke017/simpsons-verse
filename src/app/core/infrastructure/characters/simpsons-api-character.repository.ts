@@ -18,4 +18,10 @@ export class SimpsonsApiCharacterRepository implements CharacterRepository {
       map((response) => response.results.map(mapSimpsonsApiCharacterToDomain)),
     );
   }
+
+  getCharacterById(id: number): Observable<Character> {
+    return this.http.get<any>(`${this.endpoint}/${id}`).pipe(
+      map(mapSimpsonsApiCharacterToDomain)
+    );
+  }
 }

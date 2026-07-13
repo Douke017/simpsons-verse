@@ -4,10 +4,10 @@ import { Episode } from '../../domain/interfaces/episode.interface';
 import { EPISODE_REPOSITORY, EpisodeRepository } from '../../domain/ports/episode.repository.port';
 
 @Injectable()
-export class GetEpisodesUseCase {
+export class GetEpisodeByIdUseCase {
   constructor(@Inject(EPISODE_REPOSITORY) private readonly repository: EpisodeRepository) {}
 
-  execute(page: number = 1): Observable<Episode[]> {
-    return this.repository.getEpisodes(page);
+  execute(id: number): Observable<Episode> {
+    return this.repository.getEpisodeById(id);
   }
 }

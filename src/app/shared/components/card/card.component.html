@@ -12,32 +12,34 @@
   <ion-card-content>
     <p class="quote-content">"{{ content() }}"</p>
 
-    <dl class="card-details">
-      @if (age()) {
-        <div>
-          <dt>Age</dt>
-          <dd>{{ age() }} years</dd>
-        </div>
-      }
-      @if (birthdate()) {
-        <div>
-          <dt>{{ dateLabel() }}</dt>
-          <dd>{{ birthdate() | formatDate }}</dd>
-        </div>
-      }
-      @if (gender()) {
-        <div>
-          <dt>Gender</dt>
-          <dd>{{ gender() }}</dd>
-        </div>
-      }
-      @if (occupation()) {
-        <div>
-          <dt>Occupation</dt>
-          <dd>{{ occupation() }}</dd>
-        </div>
-      }
-    </dl>
+    @if (age() || birthdate() || gender() || occupation()) {
+      <dl class="card-details">
+        @if (age()) {
+          <div>
+            <dt>Age</dt>
+            <dd>{{ age() }} years</dd>
+          </div>
+        }
+        @if (birthdate()) {
+          <div>
+            <dt>{{ dateLabel() }}</dt>
+            <dd>{{ birthdate() | formatDate }}</dd>
+          </div>
+        }
+        @if (gender()) {
+          <div>
+            <dt>Gender</dt>
+            <dd>{{ gender() }}</dd>
+          </div>
+        }
+        @if (occupation()) {
+          <div>
+            <dt>Occupation</dt>
+            <dd>{{ occupation() }}</dd>
+          </div>
+        }
+      </dl>
+    }
   </ion-card-content>
 </ion-card>
 

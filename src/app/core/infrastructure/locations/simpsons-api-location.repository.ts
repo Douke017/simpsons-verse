@@ -13,9 +13,15 @@ export class SimpsonsApiLocationRepository implements LocationRepository {
 
   constructor(private readonly http: HttpClient) {}
 
-  getLocations(): Observable<Location[]> {
-    return this.http.get<SimpsonsApiLocationResponse>(this.endpoint).pipe(
+  getLocations(page: number = 1): Observable<Location[]> {
+    return this.http.get<SimpsonsApiLocationResponse>(`${this.endpoint}?page=${page}`).pipe(
       map((response) => response.results.map(mapSimpsonsApiLocationToDomain)),
+    );
+  }
+
+  getLocationById(id: number): Observable<Location> {
+    return this.http.get<any>(`${this.endpoint}/${id}`).pipe(
+      map(mapSimpsonsApiLocationToDomain)
     );
   }
 }

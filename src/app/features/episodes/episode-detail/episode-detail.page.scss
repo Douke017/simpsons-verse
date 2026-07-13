@@ -2,6 +2,16 @@
   --background: #131313;
 }
 
+.detail-toolbar {
+  --border-style: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  .header-back-icon {
+    font-size: 1.4rem;
+    color: var(--color-primary, #fed41d);
+  }
+}
+
 .episodes-main-layout {
   padding: 16px 20px 48px;
 }
@@ -207,7 +217,7 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s;
+  transition: transform 0.2s ease, background-color 0.2;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.04);
@@ -293,7 +303,7 @@
 
   .character-role-badge {
     font-size: 0.65rem;
-    color: #a5b4fc; /* indigo-300 */
+    color: #a5b4fc;
     font-weight: 700;
     margin: 0;
     text-transform: uppercase;
@@ -351,7 +361,7 @@
 /* Behind the scenes bento */
 .behind-scenes-section {
   margin-top: 48px;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 }
 
 .behind-scenes-title {
@@ -472,121 +482,8 @@
   }
 }
 
-/* Explorer Section */
-.explorer-episodes-section {
-  margin-top: 48px;
-  margin-bottom: 24px;
-}
-
-.explorer-title {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin: 0 0 20px;
-  letter-spacing: -0.02em;
-}
-
-.explorer-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-
-  @media (min-width: 640px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.episode-explorer-card {
-  background: var(--color-surface-container-low, #1c1b1b);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: border-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
-
-  &:hover {
-    border-color: rgba(255, 255, 255, 0.12);
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  &.active-selection {
-    border-color: var(--color-primary, #fed41d) !important;
-    box-shadow: 0 4px 16px rgba(254, 212, 29, 0.15);
-  }
-
-  .card-thumbnail-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16/9;
-    background: #0f0e0c;
-    overflow: hidden;
-  }
-
-  .card-thumbnail-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .card-badge-overlay {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    background: rgba(14, 14, 14, 0.75);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  .card-details-info {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .card-title-text {
-    font-size: 0.95rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin: 0;
-    line-height: 1.3;
-  }
-
-  .card-airdate-text {
-    font-size: 0.75rem;
-    color: #8c8c8c;
-    margin: 0;
-  }
-}
-
-.explorer-loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  grid-column: span 3;
-  height: 200px;
-  gap: 12px;
-  color: #737373;
-}
-
-.episodes-global-loading {
+/* Loading & error wrappers */
+.detail-loading-wrapper, .detail-error-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -594,4 +491,28 @@
   height: 80vh;
   gap: 16px;
   color: #8c8c8c;
+}
+
+.detail-error-wrapper {
+  color: #f87171;
+  padding: 32px;
+  text-align: center;
+
+  .error-msg {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .btn-retry {
+    background: var(--color-primary, #fed41d);
+    color: #121212;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
 }

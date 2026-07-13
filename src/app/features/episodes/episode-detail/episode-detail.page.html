@@ -1,35 +1,49 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="detail-toolbar">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <h1 class="toolbar-brand-title"><span>Springfield</span> Explorer</h1>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/main/characters">
-        <span class="material-symbols-outlined">search</span>
+      <ion-button routerLink="/main/episodes">
+        <span class="material-symbols-outlined header-back-icon">arrow_back</span>
       </ion-button>
     </ion-buttons>
+    
+    <h1 class="toolbar-brand-title">
+      @if (episode()) {
+        {{ episode()!.name }}
+      } @else {
+        Detalle
+      }
+    </h1>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="episodes-content-container">
-  @if (selectedEpisode()) {
+  @if (isLoading()) {
+    <div class="detail-loading-wrapper">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Cargando información del episodio...</p>
+    </div>
+  } @else if (error()) {
+    <div class="detail-error-wrapper">
+      <p class="error-msg">{{ error() }}</p>
+      <button class="btn-retry" routerLink="/main/episodes">Volver a episodios</button>
+    </div>
+  } @else if (episode()) {
     <main class="episodes-main-layout max-w-container-max mx-auto pb-24">
 
       <!-- Hero Section -->
       <section class="hero-section">
         <div 
           class="hero-background-image" 
-          [style.background-image]="'url(' + (selectedEpisode()!.imagePath | simpsonsImageUrl) + ')'"
-          [attr.aria-label]="selectedEpisode()!.alt">
+          [style.background-image]="'url(' + (episode()!.imagePath | simpsonsImageUrl) + ')'"
+          [attr.aria-label]="episode()!.name">
         </div>
         <div class="hero-gradient-overlay"></div>
         <div class="hero-caption-wrapper">
           <div class="hero-badges-row">
-            <span class="badge-season-code">{{ selectedEpisode()!.subtitle }}</span>
-            <span class="badge-airdate">{{ selectedEpisode()!.airdate }}</span>
+            <span class="badge-season-code">S{{ episode()!.season | number:'2.0-0' }}E{{ episode()!.episodeNumber | number:'2.0-0' }}</span>
+            <span class="badge-airdate">{{ episode()!.airdate }}</span>
           </div>
-          <h2 class="hero-display-title">{{ selectedEpisode()!.title }}</h2>
+          <h2 class="hero-display-title">{{ episode()!.name }}</h2>
         </div>
       </section>
 
@@ -41,15 +55,15 @@
           <div class="synopsis-section">
             <h3 class="section-heading-indicator">Sinopsis</h3>
             <p class="synopsis-text leading-relaxed">
-              {{ selectedEpisode()!.content }}
+              {{ episode()!.synopsis }}
             </p>
           </div>
 
           <!-- Play & Action Buttons -->
           <div class="primary-actions-row">
-            <button class="btn-primary-action" (click)="viewEpisodeDetails(selectedEpisode()!.id)">
+            <button class="btn-primary-action">
               <span class="material-symbols-outlined btn-icon-fill">play_arrow</span>
-              Ver Detalles
+              Ver Episodio
             </button>
             <button class="btn-secondary-action">
               <span class="material-symbols-outlined">add</span>
@@ -89,11 +103,11 @@
             <div class="production-stats-grid">
               <div class="stat-cell">
                 <p class="stat-label">Calificación</p>
-                <p class="stat-value-rating">{{ getRating(selectedEpisode()!.id) }}/10</p>
+                <p class="stat-value-rating">{{ getRating(episode()!.id) }}/10</p>
               </div>
               <div class="stat-cell text-right">
                 <p class="stat-label">Escritor</p>
-                <p class="stat-value-writer">{{ getWriter(selectedEpisode()!.id) }}</p>
+                <p class="stat-value-writer">{{ getWriter(episode()!.id) }}</p>
               </div>
             </div>
           </div>
@@ -131,44 +145,6 @@
         </div>
       </section>
 
-      <!-- Explorer Grid: List of all episodes -->
-      <section class="explorer-episodes-section">
-        <h3 class="explorer-title">Explorar Todos los Episodios</h3>
-        <div class="explorer-grid">
-          @for (episode of episodesList(); track episode.id) {
-            <div 
-              class="episode-explorer-card" 
-              [class.active-selection]="selectedEpisode()?.id === episode.id"
-              (click)="viewEpisodeDetails(episode.id)">
-              <div class="card-thumbnail-wrapper">
-                <img [src]="episode.imagePath | simpsonsImageUrl" [alt]="episode.alt" class="card-thumbnail-img" />
-                <div class="card-badge-overlay">{{ episode.subtitle }}</div>
-              </div>
-              <div class="card-details-info">
-                <h4 class="card-title-text">{{ episode.title }}</h4>
-                <p class="card-airdate-text">{{ episode.airdate }}</p>
-              </div>
-            </div>
-          } @empty {
-            <div class="explorer-loading-container">
-              <ion-spinner name="crescent" color="primary"></ion-spinner>
-              <p>Cargando episodios...</p>
-            </div>
-          }
-        </div>
-      </section>
-
-      <!-- Infinite Scroll for next pages -->
-      <ion-infinite-scroll (ionInfinite)="loadNextPage($event)">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más episodios...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
-
     </main>
-  } @else {
-    <div class="episodes-global-loading">
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
-      <p>Cargando Springfield Explorer...</p>
-    </div>
   }
 </ion-content>

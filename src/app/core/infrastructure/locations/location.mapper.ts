@@ -8,5 +8,6 @@ export function mapSimpsonsApiLocationToDomain(dto: SimpsonsApiLocationDto): Loc
     imagePath: dto.image_path,
     town: dto.town,
     use: dto.use,
+    description: dto.description,
   };
 }
