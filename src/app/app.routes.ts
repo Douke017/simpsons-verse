@@ -39,6 +39,6 @@ export const routes: Routes = [
   },
   {
     path: 'card',
-    loadComponent: () => import('./shared/components/card/card.page').then( m => m.CardPage)
+    loadComponent: () => import('./shared/components/card/card.component').then(m => m.CardComponent)
   },
 ];
