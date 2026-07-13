@@ -4,8 +4,10 @@ export interface CharacterCardViewModel {
   subtitle: string;
   content: string;
   age: number | null;
-  firstAppearanceTitle: string | null;
-  firstAppearanceDate: string | null;
+  birthdate: string | null;
+  gender: string;
+  occupation: string;
+  status: string;
   portraitPath: string;
   alt: string;
 }

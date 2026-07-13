@@ -1,7 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { IonList, IonListHeader, IonRouterOutlet, IonMenuToggle, IonLabel, IonNote, IonSplitPane, IonIcon, IonMenu, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonList, IonListHeader, IonRouterOutlet, IonMenuToggle, IonLabel, IonNote, IonSplitPane, IonIcon, IonMenu, IonContent, IonHeader, IonTitle, IonToolbar, IonItem } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { home, person, play, map } from 'ionicons/icons';
 
@@ -10,7 +9,7 @@ import { home, person, play, map } from 'ionicons/icons';
   templateUrl: './main.page.html',
   styleUrls: ['./main.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterLink, IonList, IonListHeader, IonRouterOutlet, IonMenuToggle, IonLabel, IonNote, IonSplitPane, IonIcon, IonMenu, IonContent, IonHeader, IonTitle, IonToolbar]
+  imports: [RouterLink, IonList, IonListHeader, IonRouterOutlet, IonMenuToggle, IonLabel, IonNote, IonSplitPane, IonIcon, IonMenu, IonContent, IonHeader, IonTitle, IonToolbar, IonItem]
 })
 export class MainPage {
   public appPages = [

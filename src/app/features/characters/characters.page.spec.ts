@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { CharactersPage } from './characters.page';
-import { CharactersService } from './application/characters.service';
+import { CharactersService } from '../../core/application/services/characters.service';
 
 describe('CharactersPage', () => {
   let component: CharactersPage;

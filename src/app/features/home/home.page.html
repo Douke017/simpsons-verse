@@ -1,9 +1,87 @@
-<app-header title="Home"></app-header>
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Simpsons Explorer</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="home-content">
+  <div class="hero-section">
+    <div class="hero-text">
+      <h1>¡Bienvenido a Springfield!</h1>
+      <p>Explora el universo de Los Simpson con datos completos de personajes, episodios y lugares emblemáticos.</p>
+    </div>
+  </div>
+
+  <ion-grid class="dashboard-grid">
+    <ion-row>
+      <!-- Characters Shortcut Card -->
+      <ion-col size="12" size-md="4">
+        <ion-card class="dashboard-card characters-card">
+          <div class="card-icon-container">
+            <ion-icon name="people"></ion-icon>
+          </div>
+          <ion-card-header>
+            <ion-card-title>Personajes</ion-card-title>
+            <ion-card-subtitle>Conoce a los habitantes</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            Consulta biografías, ocupaciones, edades y las frases más icónicas de Homero, Bart, Marge y más.
+          </ion-card-content>
+          <div class="card-footer">
+            <ion-button fill="clear" routerLink="/main/characters" routerDirection="forward">
+              Explorar
+              <ion-icon slot="end" name="arrow-forward"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-card>
+      </ion-col>
+
+      <!-- Episodes Shortcut Card -->
+      <ion-col size="12" size-md="4">
+        <ion-card class="dashboard-card episodes-card">
+          <div class="card-icon-container">
+            <ion-icon name="tv"></ion-icon>
+          </div>
+          <ion-card-header>
+            <ion-card-title>Episodios</ion-card-title>
+            <ion-card-subtitle>Temporadas y resúmenes</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            Busca tus episodios favoritos y revive la sinopsis de las historias más locas de Springfield.
+          </ion-card-content>
+          <div class="card-footer">
+            <ion-button fill="clear" routerLink="/main/episodes" routerDirection="forward">
+              Explorar
+              <ion-icon slot="end" name="arrow-forward"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-card>
+      </ion-col>
+
+      <!-- Locations Shortcut Card -->
+      <ion-col size="12" size-md="4">
+        <ion-card class="dashboard-card locations-card">
+          <div class="card-icon-container">
+            <ion-icon name="map"></ion-icon>
+          </div>
+          <ion-card-header>
+            <ion-card-title>Ubicaciones</ion-card-title>
+            <ion-card-subtitle>Lugares legendarios</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            Desde la taberna de Moe hasta la planta nuclear. Descubre los sitios donde todo sucede.
+          </ion-card-content>
+          <div class="card-footer">
+            <ion-button fill="clear" routerLink="/main/locations" routerDirection="forward">
+              Explorar
+              <ion-icon slot="end" name="arrow-forward"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

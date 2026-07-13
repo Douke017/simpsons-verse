@@ -1,0 +1,122 @@
+.home-content {
+  --background: var(--ion-color-light, #f4f5f8);
+}
+
+.hero-section {
+  position: relative;
+  background: linear-gradient(135deg, #ffd534 0%, #ffc63b 100%);
+  padding: 60px 24px;
+  text-align: center;
+  color: #1e2022;
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  box-shadow: 0 8px 30px rgba(255, 213, 52, 0.25);
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+  }
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 500;
+    color: #3f4245;
+  }
+}
+
+.dashboard-grid {
+  padding: 24px 16px;
+}
+
+.dashboard-card {
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  background: var(--ion-card-background, #ffffff);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.card-icon-container {
+  padding: 24px 20px 0;
+  font-size: 2.5rem;
+  color: var(--ion-color-primary, #3880ff);
+}
+
+.characters-card .card-icon-container {
+  color: #ff5b5b; // Red-orange for characters
+}
+
+.episodes-card .card-icon-container {
+  color: #3880ff; // Blue for tv/episodes
+}
+
+.locations-card .card-icon-container {
+  color: #2dd36f; // Green for map/locations
+}
+
+ion-card-header {
+  padding: 16px 20px 8px;
+
+  ion-card-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--ion-color-dark, #222428);
+  }
+
+  ion-card-subtitle {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ion-color-step-600, #666);
+  }
+}
+
+ion-card-content {
+  padding: 0 20px 16px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ion-color-step-600, #666);
+  flex-grow: 1;
+}
+
+.card-footer {
+  padding: 8px 16px 16px;
+  display: flex;
+  justify-content: flex-end;
+
+  ion-button {
+    font-weight: 700;
+    font-size: 0.9rem;
+    --padding-end: 0px;
+  }
+}

@@ -1,24 +1,43 @@
-<ion-card>
-  <img [alt]="alt" [src]="image" />
+<ion-card class="premium-card">
+  <div class="card-image-container">
+    <img [alt]="alt()" [src]="image()" />
+    @if (status()) {
+      <span class="status-badge" [class]="status().toLowerCase()">{{ status() }}</span>
+    }
+  </div>
   <ion-card-header>
-    <ion-card-title>{{ title | upperCase }}</ion-card-title>
-    <ion-card-subtitle>{{ subtitle | upperCase }}</ion-card-subtitle>
+    <ion-card-title>{{ title() | upperCase }}</ion-card-title>
+    <ion-card-subtitle>{{ subtitle() }}</ion-card-subtitle>
   </ion-card-header>
-
-
   <ion-card-content>
-    <p>{{ content }}</p>
-    <p>Edad: {{ age ?? 'Desconocida' }}</p>
-    <p>
-      Primera aparición:
-      @if (firstAppearanceTitle) {
-        <span>{{ firstAppearanceTitle | upperCase }}</span>
-      } @else {
-        <span>Sin dato</span>
+    <p class="quote-content">"{{ content() }}"</p>
+
+    <dl class="card-details">
+      @if (age()) {
+        <div>
+          <dt>Age</dt>
+          <dd>{{ age() }} years</dd>
+        </div>
       }
-      @if (firstAppearanceDate) {
-        <span> - {{ firstAppearanceDate | formatDate }}</span>
+      @if (birthdate()) {
+        <div>
+          <dt>{{ dateLabel() }}</dt>
+          <dd>{{ birthdate() | formatDate }}</dd>
+        </div>
       }
-    </p>
+      @if (gender()) {
+        <div>
+          <dt>Gender</dt>
+          <dd>{{ gender() }}</dd>
+        </div>
+      }
+      @if (occupation()) {
+        <div>
+          <dt>Occupation</dt>
+          <dd>{{ occupation() }}</dd>
+        </div>
+      }
+    </dl>
   </ion-card-content>
 </ion-card>
+

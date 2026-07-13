@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Character } from '../../domain/models/character.model';
+import { SIMPSONS_CHARACTERS_ENDPOINT } from '../../infrastructure/constants/simpsons-api.constants';
+import { Character } from '../../domain/interfaces/character.interface';
 import { CharacterRepository } from '../../domain/ports/character.repository.port';
 import { SimpsonsApiResponse } from './character.dto';
 import { mapSimpsonsApiCharacterToDomain } from './character.mapper';
 
 @Injectable()
 export class SimpsonsApiCharacterRepository implements CharacterRepository {
-  private readonly endpoint = 'https://thesimpsonsapi.com/api/characters';
+  private readonly endpoint = SIMPSONS_CHARACTERS_ENDPOINT;
 
   constructor(private readonly http: HttpClient) {}
 

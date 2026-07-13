@@ -1,13 +1,35 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>episodes</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Episodes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">episodes</ion-title>
+      <ion-title size="large">Episodes</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div class="episodes-grid">
+    @for (episode of episodes(); track episode.id) {
+      <app-card
+        [title]="episode.title"
+        [subtitle]="episode.subtitle"
+        [content]="episode.content"
+        [birthdate]="episode.airdate"
+        dateLabel="Airdate"
+        [image]="episode.imagePath | simpsonsImageUrl"
+        [alt]="episode.alt">
+      </app-card>
+    } @empty {
+      <div class="loading-container">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+        <p>Cargando episodios...</p>
+      </div>
+    }
+  </div>
 </ion-content>

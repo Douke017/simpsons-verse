@@ -1,13 +1,33 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>locations</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Locations</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">locations</ion-title>
+      <ion-title size="large">Locations</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div class="locations-grid">
+    @for (location of locations(); track location.id) {
+      <app-card
+        [title]="location.title"
+        [subtitle]="location.subtitle"
+        [content]="location.content"
+        [image]="location.imagePath | simpsonsImageUrl"
+        [alt]="location.alt">
+      </app-card>
+    } @empty {
+      <div class="loading-container">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+        <p>Cargando ubicaciones...</p>
+      </div>
+    }
+  </div>
 </ion-content>

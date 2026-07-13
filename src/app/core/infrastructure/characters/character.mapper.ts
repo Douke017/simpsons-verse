@@ -1,4 +1,4 @@
-import { Character } from '../../domain/models/character.model';
+import { Character } from '../../domain/interfaces/character.interface';
 import { SimpsonsApiCharacterDto } from './character.dto';
 
 export function mapSimpsonsApiCharacterToDomain(dto: SimpsonsApiCharacterDto): Character {
@@ -12,17 +12,5 @@ export function mapSimpsonsApiCharacterToDomain(dto: SimpsonsApiCharacterDto): C
     portraitPath: dto.portrait_path,
     phrases: dto.phrases,
     status: dto.status,
-    firstAppearanceEpisode: dto.first_appearance_ep
-      ? {
-          name: dto.first_appearance_ep.name,
-          airdate: dto.first_appearance_ep.airdate,
-        }
-      : null,
-    firstAppearanceShort: dto.first_appearance_sh
-      ? {
-          name: dto.first_appearance_sh.name,
-          airdate: dto.first_appearance_sh.airdate,
-        }
-      : null,
   };
 }

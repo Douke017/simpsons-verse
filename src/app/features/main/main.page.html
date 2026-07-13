@@ -18,26 +18,23 @@
         <ion-list-header>Menú</ion-list-header>
         <ion-note>Explora el universo de Los Simpson</ion-note>
 
-        <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-
-          <ion-item
-            [routerLink]="p.url"
-            routerDirection="root"
-            lines="none"
-            detail="false">
-
-            <ion-icon
-              slot="start"
-              [name]="p.icon">
-            </ion-icon>
-
-            <ion-label>
-              {{ p.title }}
-            </ion-label>
-
-          </ion-item>
-
-        </ion-menu-toggle>
+        @for (p of appPages; track p.title) {
+          <ion-menu-toggle auto-hide="false">
+            <ion-item
+              [routerLink]="p.url"
+              routerDirection="root"
+              lines="none"
+              detail="false">
+              <ion-icon
+                slot="start"
+                [name]="p.icon">
+              </ion-icon>
+              <ion-label>
+                {{ p.title }}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        }
 
       </ion-list>
 

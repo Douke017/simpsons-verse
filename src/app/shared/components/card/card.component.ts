@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/angular/standalone';
 import { UpperCasePipe } from '../../pipes/upper-case.pipe';
 import { FormatDatePipe } from '../../pipes/format-date.pipe';
+import { DEFAULT_CHARACTER_IMAGE_URL } from '../../config/api.config';
 
 @Component({
   selector: 'app-card',
@@ -11,12 +12,15 @@ import { FormatDatePipe } from '../../pipes/format-date.pipe';
   imports: [IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, UpperCasePipe, FormatDatePipe],
 })
 export class CardComponent {
-  @Input() title = 'Card Title';
-  @Input() subtitle = 'Card Subtitle';
-  @Input() content = 'Here is a small text description for the card content.';
-  @Input() image = 'https://ionicframework.com/docs/img/demos/card-media.png';
-  @Input() alt = 'Character image';
-  @Input() age: number | null = null;
-  @Input() firstAppearanceTitle: string | null = null;
-  @Input() firstAppearanceDate: string | null = null;
+  title = input<string>('Card Title');
+  subtitle = input<string>('Card Subtitle');
+  content = input<string>('Here is a small text description for the card content.');
+  image = input<string>(DEFAULT_CHARACTER_IMAGE_URL);
+  alt = input<string>('Character image');
+  age = input<number | null>(null);
+  birthdate = input<string | null>(null);
+  dateLabel = input<string>('Birthdate');
+  gender = input<string>('');
+  occupation = input<string>('');
+  status = input<string>('');
 }
