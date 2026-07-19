@@ -1,16 +1,13 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import {
-  IonContent,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonSpinner,
-  IonButton
-} from '@ionic/angular/standalone';
+import { ActivatedRoute } from '@angular/router';
+import { Location as AngularLocation } from '@angular/common';
+import { IonContent } from '@ionic/angular/standalone';
 import { SimpsonsImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
 import { GetLocationByIdUseCase } from '../../../core/application/use-cases/get-location-by-id.usecase';
 import { Location } from '../../../core/domain/interfaces/location.interface';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { ErrorStateComponent } from '../../../shared/components/error-state/error-state.component';
 
 @Component({
   selector: 'app-location-detail',
@@ -18,19 +15,17 @@ import { Location } from '../../../core/domain/interfaces/location.interface';
   styleUrls: ['./location-detail.page.scss'],
   standalone: true,
   imports: [
-    RouterLink,
     IonContent,
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonSpinner,
-    IonButton,
-    SimpsonsImageUrlPipe
+    SimpsonsImageUrlPipe,
+    HeaderComponent,
+    LoadingSpinnerComponent,
+    ErrorStateComponent
   ],
 })
 export class LocationDetailPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly getLocationByIdUseCase = inject(GetLocationByIdUseCase);
+  private readonly locationHelper = inject(AngularLocation);
 
   // States
   public readonly location = signal<Location | null>(null);
@@ -58,12 +53,16 @@ export class LocationDetailPage implements OnInit {
     }
   }
 
+  public goBack(): void {
+    this.locationHelper.back();
+  }
+
   public shareLocation(): void {
     const loc = this.location();
     if (loc && navigator.share) {
       navigator.share({
-        title: `${loc.name} - Springfield Explorer`,
-        text: `¡Echa un vistazo a ${loc.name} en Springfield!`,
+        title: `${loc.name} - SimpsonsVerse`,
+        text: `¡Echa un vistazo a ${loc.name} en SimpsonsVerse!`,
         url: window.location.href
       }).catch(() => {});
     }

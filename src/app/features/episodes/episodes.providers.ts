@@ -4,6 +4,7 @@ import { GetEpisodeByIdUseCase } from '../../core/application/use-cases/get-epis
 import { EPISODE_REPOSITORY } from '../../core/domain/ports/episode.repository.port';
 import { SimpsonsApiEpisodeRepository } from '../../core/infrastructure/episodes/simpsons-api-episode.repository';
 import { EpisodesPresenter } from './episodes.presenter';
+import { EpisodeService } from '../../core/application/services/episode.service';
 
 // Import Character providers for featured characters rendering
 import { GetCharactersUseCase } from '../../core/application/use-cases/get-characters.usecase';
@@ -15,6 +16,7 @@ export const episodeProviders: Provider[] = [
   GetEpisodesUseCase,
   GetEpisodeByIdUseCase,
   EpisodesPresenter,
+  EpisodeService,
   { provide: EPISODE_REPOSITORY, useClass: SimpsonsApiEpisodeRepository },
   GetCharactersUseCase,
   { provide: CHARACTER_REPOSITORY, useClass: SimpsonsApiCharacterRepository },

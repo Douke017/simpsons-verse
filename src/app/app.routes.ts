@@ -65,10 +65,6 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'profile',
-    loadComponent: () => import('./features/profile/profile.page').then(m => m.ProfilePage)
-  },
-  {
     path: 'header',
     loadComponent: () => import('./shared/components/header/header.component').then(m => m.HeaderComponent)
   },

@@ -1,13 +1,12 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DecimalPipe, Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import {
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
   IonSpinner,
-  IonButton
+  IonGrid,
+  IonRow,
+  IonCol
 } from '@ionic/angular/standalone';
 import { map } from 'rxjs/operators';
 import { SimpsonsImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
@@ -16,6 +15,9 @@ import { Episode } from '../../../core/domain/interfaces/episode.interface';
 import { GetCharactersUseCase } from '../../../core/application/use-cases/get-characters.usecase';
 import { CharactersPresenter } from '../../characters/characters.presenter';
 import { CharacterCardViewModel } from '../../characters/character-card.view-model';
+import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { ErrorStateComponent } from '../../../shared/components/error-state/error-state.component';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
 
 @Component({
   selector: 'app-episode-detail',
@@ -23,20 +25,22 @@ import { CharacterCardViewModel } from '../../characters/character-card.view-mod
   styleUrls: ['./episode-detail.page.scss'],
   standalone: true,
   imports: [
-    RouterLink,
     IonContent,
-    IonHeader,
-    IonToolbar,
-    IonButtons,
     IonSpinner,
-    IonButton,
+    IonGrid,
+    IonRow,
+    IonCol,
     DecimalPipe,
-    SimpsonsImageUrlPipe
+    SimpsonsImageUrlPipe,
+    LoadingSpinnerComponent,
+    ErrorStateComponent,
+    HeaderComponent
   ],
 })
 export class EpisodeDetailPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly getEpisodeByIdUseCase = inject(GetEpisodeByIdUseCase);
+  private readonly location = inject(Location);
   
   private readonly getCharactersUseCase = inject(GetCharactersUseCase);
   private readonly charactersPresenter = inject(CharactersPresenter);
@@ -102,6 +106,10 @@ export class EpisodeDetailPage implements OnInit {
       this.error.set('ID de episodio no válido.');
       this.isLoading.set(false);
     }
+  }
+
+  public goBack(): void {
+    this.location.back();
   }
 
   public getRating(id: number): string {

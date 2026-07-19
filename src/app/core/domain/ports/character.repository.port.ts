@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Character } from '../interfaces/character.interface';
 
 export interface CharacterRepository {
-  getCharacters(): Observable<Character[]>;
+  getCharacters(page?: number): Observable<Character[]>;
   getCharacterById(id: number): Observable<Character>;
 }
 

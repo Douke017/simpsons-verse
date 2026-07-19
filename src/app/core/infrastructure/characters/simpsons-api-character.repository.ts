@@ -13,8 +13,8 @@ export class SimpsonsApiCharacterRepository implements CharacterRepository {
 
   constructor(private readonly http: HttpClient) {}
 
-  getCharacters(): Observable<Character[]> {
-    return this.http.get<SimpsonsApiResponse>(this.endpoint).pipe(
+  getCharacters(page: number = 1): Observable<Character[]> {
+    return this.http.get<SimpsonsApiResponse>(`${this.endpoint}?page=${page}`).pipe(
       map((response) => response.results.map(mapSimpsonsApiCharacterToDomain)),
     );
   }

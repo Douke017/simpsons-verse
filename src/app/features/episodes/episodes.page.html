@@ -1,23 +1,16 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <h1 class="toolbar-brand-title"><span>Springfield</span> Explorer</h1>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/main/characters">
-        <span class="material-symbols-outlined">search</span>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header title="Episodios"></app-header>
 
 <ion-content [fullscreen]="true" class="episodes-content-container">
-  @if (selectedEpisode()) {
+  <!-- State Indicators -->
+  @if (episodeService.isLoading() && episodeService.episodesList().length === 0) {
+    <app-loading-spinner message="Cargando Springfield episodes..."></app-loading-spinner>
+  } @else if (episodeService.error()) {
+    <app-error-state [message]="episodeService.error()!" (retry)="episodeService.loadInitialPage()"></app-error-state>
+  } @else if (selectedEpisode()) {
     <main class="episodes-main-layout max-w-container-max mx-auto pb-24">
 
-      <!-- Hero Section -->
-      <section class="hero-section">
+      <!-- Hero Section (Featured Episode) -->
+      <section class="hero-section" (click)="viewEpisodeDetails(selectedEpisode()!.id)" style="cursor: pointer;">
         <div 
           class="hero-background-image" 
           [style.background-image]="'url(' + (selectedEpisode()!.imagePath | simpsonsImageUrl) + ')'"
@@ -33,73 +26,70 @@
         </div>
       </section>
 
-      <!-- Content Grid: Details Column + Sidebar Column -->
-      <div class="details-content-grid">
-        
-        <!-- Left Column: Synopsis & Primary Action -->
-        <div class="details-left-column">
-          <div class="synopsis-section">
-            <h3 class="section-heading-indicator">Sinopsis</h3>
-            <p class="synopsis-text leading-relaxed">
-              {{ selectedEpisode()!.content }}
-            </p>
-          </div>
-
-          <!-- Play & Action Buttons -->
-          <div class="primary-actions-row">
-            <button class="btn-primary-action" (click)="viewEpisodeDetails(selectedEpisode()!.id)">
-              <span class="material-symbols-outlined btn-icon-fill">play_arrow</span>
-              Ver Detalles
-            </button>
-            <button class="btn-secondary-action">
-              <span class="material-symbols-outlined">add</span>
-              Agregar a Lista
-            </button>
-          </div>
-        </div>
-
-        <!-- Right Column: Featured Characters & Rating Stats -->
-        <div class="details-right-column">
+      <!-- Content Grid: Details Column + Sidebar Column via Native Ionic Grid -->
+      <ion-grid class="ion-no-padding">
+        <ion-row>
           
-          <!-- Featured Characters list -->
-          <div class="sidebar-glass-card">
-            <h3 class="sidebar-card-label">Personajes Destacados</h3>
-            
-            <div class="characters-chips-list">
-              @for (char of featuredCharacters(); track char.name) {
-                <div class="character-chip-row group">
-                  <div class="character-avatar-wrapper">
-                    <img [src]="char.image | simpsonsImageUrl" [alt]="char.name" class="character-avatar-img" />
+          <!-- Left Column: Synopsis & Primary Action -->
+          <ion-col size="12" size-lg="7" class="ion-no-padding">
+            <div class="card-grid-padding">
+              <div class="synopsis-section">
+                <h3 class="section-heading-indicator">Sinopsis</h3>
+                <p class="synopsis-text leading-relaxed">
+                  {{ selectedEpisode()!.content }}
+                </p>
+              </div>
+
+
+            </div>
+          </ion-col>
+
+          <!-- Right Column: Featured Characters & Rating Stats -->
+          <ion-col size="12" size-lg="5" class="ion-no-padding">
+            <div class="card-grid-padding">
+              
+              <!-- Featured Characters list -->
+              <div class="sidebar-glass-card">
+                <h3 class="sidebar-card-label">Personajes Destacados</h3>
+                
+                <div class="characters-chips-list">
+                  @for (char of episodeService.featuredCharacters(); track char.name) {
+                    <div class="character-chip-row group">
+                      <div class="character-avatar-wrapper">
+                        <img [src]="char.image | simpsonsImageUrl" [alt]="char.name" class="character-avatar-img" />
+                      </div>
+                      <div class="character-meta">
+                        <p class="character-name-title">{{ char.name }}</p>
+                        <p class="character-role-badge">{{ char.role }}</p>
+                      </div>
+                    </div>
+                  } @empty {
+                    <div class="character-loading-spinner">
+                      <ion-spinner name="crescent" color="primary"></ion-spinner>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Rating & Production details -->
+              <div class="sidebar-glass-card">
+                <div class="production-stats-grid">
+                  <div class="stat-cell">
+                    <p class="stat-label">Calificación</p>
+                    <p class="stat-value-rating">{{ episodeService.getRating(selectedEpisode()!.id) }}/10</p>
                   </div>
-                  <div class="character-meta">
-                    <p class="character-name-title">{{ char.name }}</p>
-                    <p class="character-role-badge">{{ char.role }}</p>
+                  <div class="stat-cell text-right">
+                    <p class="stat-label">Escritor</p>
+                    <p class="stat-value-writer">{{ episodeService.getWriter(selectedEpisode()!.id) }}</p>
                   </div>
                 </div>
-              } @empty {
-                <div class="character-loading-spinner">
-                  <ion-spinner name="crescent" color="primary"></ion-spinner>
-                </div>
-              }
-            </div>
-          </div>
-
-          <!-- Rating & Production details -->
-          <div class="sidebar-glass-card">
-            <div class="production-stats-grid">
-              <div class="stat-cell">
-                <p class="stat-label">Calificación</p>
-                <p class="stat-value-rating">{{ getRating(selectedEpisode()!.id) }}/10</p>
               </div>
-              <div class="stat-cell text-right">
-                <p class="stat-label">Escritor</p>
-                <p class="stat-value-writer">{{ getWriter(selectedEpisode()!.id) }}</p>
-              </div>
-            </div>
-          </div>
 
-        </div>
-      </div>
+            </div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
 
       <!-- Behind the Scenes Bento grid -->
       <section class="behind-scenes-section">
@@ -131,44 +121,45 @@
         </div>
       </section>
 
-      <!-- Explorer Grid: List of all episodes -->
+      <!-- Explorer Grid: List of all episodes via Native Ionic Grid -->
       <section class="explorer-episodes-section">
         <h3 class="explorer-title">Explorar Todos los Episodios</h3>
-        <div class="explorer-grid">
-          @for (episode of episodesList(); track episode.id) {
-            <div 
-              class="episode-explorer-card" 
-              [class.active-selection]="selectedEpisode()?.id === episode.id"
-              (click)="viewEpisodeDetails(episode.id)">
-              <div class="card-thumbnail-wrapper">
-                <img [src]="episode.imagePath | simpsonsImageUrl" [alt]="episode.alt" class="card-thumbnail-img" />
-                <div class="card-badge-overlay">{{ episode.subtitle }}</div>
+        
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+            @for (episode of episodes(); track episode.id) {
+              <ion-col size="12" size-sm="6" size-md="4" size-lg="3" class="ion-no-padding">
+                <div class="card-grid-padding">
+                  <div 
+                    class="episode-explorer-card" 
+                    (click)="viewEpisodeDetails(episode.id)">
+                    <div class="card-thumbnail-wrapper">
+                      <img [src]="episode.imagePath | simpsonsImageUrl" [alt]="episode.alt" class="card-thumbnail-img" />
+                      <div class="card-badge-overlay">{{ episode.subtitle }}</div>
+                    </div>
+                    <div class="card-details-info">
+                      <h4 class="card-title-text">{{ episode.title }}</h4>
+                      <p class="card-airdate-text">{{ episode.airdate }}</p>
+                    </div>
+                  </div>
+                </div>
+              </ion-col>
+            } @empty {
+              <div class="empty-state-container">
+                <p>Cargando episodios...</p>
               </div>
-              <div class="card-details-info">
-                <h4 class="card-title-text">{{ episode.title }}</h4>
-                <p class="card-airdate-text">{{ episode.airdate }}</p>
-              </div>
-            </div>
-          } @empty {
-            <div class="explorer-loading-container">
-              <ion-spinner name="crescent" color="primary"></ion-spinner>
-              <p>Cargando episodios...</p>
-            </div>
-          }
-        </div>
+            }
+          </ion-row>
+        </ion-grid>
       </section>
 
-      <!-- Infinite Scroll for next pages -->
-      <ion-infinite-scroll (ionInfinite)="loadNextPage($event)">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más episodios...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
+      <!-- Pagination Component -->
+      <app-pagination
+        [currentPage]="episodeService.currentPage()"
+        [hasMore]="episodeService.hasMore()"
+        (pageChange)="episodeService.goToPage($event)">
+      </app-pagination>
 
     </main>
-  } @else {
-    <div class="episodes-global-loading">
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
-      <p>Cargando Springfield Explorer...</p>
-    </div>
   }
 </ion-content>

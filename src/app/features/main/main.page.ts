@@ -13,10 +13,10 @@ import { home, person, play, map } from 'ionicons/icons';
 })
 export class MainPage {
   public appPages = [
-    { title: 'Home', url: '/main/home', icon: 'home' },
-    { title: 'Characters', url: '/main/characters', icon: 'person' },
-    { title: 'Episodes', url: '/main/episodes', icon: 'play' },
-    { title: 'Locations', url: '/main/locations', icon: 'map' }
+    { title: 'Inicio', url: '/main/home', icon: 'home' },
+    { title: 'Personajes', url: '/main/characters', icon: 'person' },
+    { title: 'Episodios', url: '/main/episodes', icon: 'play' },
+    { title: 'Ubicaciones', url: '/main/locations', icon: 'map' }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 

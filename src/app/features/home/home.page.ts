@@ -4,11 +4,6 @@ import { Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs/operators';
 import {
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonMenuButton,
-  IonButton,
   IonIcon,
   IonSpinner
 } from '@ionic/angular/standalone';
@@ -17,6 +12,7 @@ import { menu, search, people, tv, map as mapIcon, arrowForward } from 'ionicons
 import { GetCharactersUseCase } from '../../core/application/use-cases/get-characters.usecase';
 import { GetEpisodesUseCase } from '../../core/application/use-cases/get-episodes.usecase';
 import { SimpsonsImageUrlPipe } from '../../shared/pipes/image-url.pipe';
+import { HeaderComponent } from '../../shared/components/header/header.component';
 
 @Component({
   selector: 'app-home',
@@ -26,14 +22,10 @@ import { SimpsonsImageUrlPipe } from '../../shared/pipes/image-url.pipe';
   imports: [
     RouterLink,
     IonContent,
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonMenuButton,
-    IonButton,
     IonIcon,
     IonSpinner,
-    SimpsonsImageUrlPipe
+    SimpsonsImageUrlPipe,
+    HeaderComponent
   ]
 })
 export class HomePage {

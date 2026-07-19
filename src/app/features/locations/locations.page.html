@@ -1,16 +1,4 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <h1 class="toolbar-brand-title"><span>Springfield</span> Explorer</h1>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/main/characters">
-        <span class="material-symbols-outlined">search</span>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header title="Ubicaciones"></app-header>
 
 <ion-content [fullscreen]="true" class="locations-content-container">
   <main class="locations-main-layout max-w-container-max mx-auto pb-24">
@@ -18,71 +6,91 @@
     <!-- Search Section -->
     <section class="locations-search-section">
       <h2 class="font-headline-lg font-title">Descubre Springfield</h2>
-      <div class="search-bar-wrapper">
-        <span class="material-symbols-outlined search-bar-icon">search</span>
-        <input 
-          type="text" 
-          class="search-bar-input" 
-          placeholder="Busca ubicaciones, puntos de interés..." 
-          [value]="searchQuery()"
-          (input)="onSearchChange($event)" />
-      </div>
+      <app-search-bar
+        [value]="locationService.searchQuery()"
+        (queryChange)="locationService.setSearchQuery($event)"
+        placeholder="Busca ubicaciones, puntos de interés...">
+      </app-search-bar>
     </section>
 
     <!-- Filter Chips list -->
     <div class="filter-chips-container hide-scrollbar">
-      @for (category of categories; track category) {
+      @for (category of locationService.categories; track category) {
         <button 
           class="filter-chip-btn" 
-          [class.active-chip]="selectedCategory() === category"
-          (click)="selectCategory(category)">
-          {{ category === 'All' ? 'Todas las Ubicaciones' : category }}
+          [class.active-chip]="locationService.selectedCategory() === category"
+          (click)="locationService.setSelectedCategory(category)">
+          {{ 
+            category === 'All' ? 'Todas' : 
+            category === 'Food & Drink' ? 'Comida y Bebida' :
+            category === 'Industrial' ? 'Industrial' :
+            category === 'Shopping' ? 'Tiendas' :
+            category === 'Residential' ? 'Residencial' :
+            category === 'Education' ? 'Educación' :
+            category === 'Other' ? 'Otros' : category
+          }}
         </button>
       }
     </div>
 
-    <!-- Bento Grid (Featured + Reusable Standard Cards) -->
-    <div class="locations-bento-grid">
-      @for (location of filteredLocations(); track location.id; let isFirst = $first) {
-        @if (isFirst) {
-          <!-- Featured Card: Spans col-span-2 or full row -->
-          <div class="bento-card-featured group" (click)="viewLocationDetails(location.id)">
-            <div class="featured-image-wrapper">
-              <img [src]="location.imagePath | simpsonsImageUrl" [alt]="location.alt" class="featured-image" />
-              <div class="featured-overlay"></div>
-              <span class="featured-badge">{{ location.subtitle }}</span>
+    <!-- State Indicators -->
+    @if (locationService.isLoading() && locationService.locationsList().length === 0) {
+      <app-loading-spinner message="Cargando Springfield locations..."></app-loading-spinner>
+    } @else if (locationService.error()) {
+      <app-error-state [message]="locationService.error()!" (retry)="locationService.loadInitialPage()"></app-error-state>
+    } @else {
+      <!-- Native Ionic Grid for Responsive Layout scaling -->
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          @for (location of locations(); track location.id; let isFirst = $first) {
+            @if (isFirst) {
+              <!-- Featured Card: Spans full width on mobile/tablet, 8 columns on large screens -->
+              <ion-col size="12" size-lg="8" class="ion-no-padding">
+                <div class="card-grid-padding">
+                  <div class="bento-card-featured group" (click)="viewLocationDetails(location.id)">
+                    <div class="featured-image-wrapper">
+                       <img [src]="location.imagePath | simpsonsImageUrl" [alt]="location.alt" class="featured-image" />
+                       <div class="featured-overlay"></div>
+                       <span class="featured-badge">{{ location.subtitle }}</span>
+                    </div>
+                    <div class="featured-details">
+                       <h3 class="featured-card-title">{{ location.title }}</h3>
+                       <p class="featured-card-description">{{ location.content }}</p>
+                       <button class="featured-action-btn">Ver Detalles</button>
+                    </div>
+                  </div>
+                </div>
+              </ion-col>
+            } @else {
+              <!-- Standard Cards -->
+              <ion-col size="12" size-md="6" size-lg="4" class="ion-no-padding">
+                <div class="card-grid-padding">
+                  <app-card
+                    class="bento-card-standard"
+                    (click)="viewLocationDetails(location.id)"
+                    [title]="location.title"
+                    [subtitle]="location.subtitle"
+                    [content]="location.content"
+                    [image]="location.imagePath | simpsonsImageUrl"
+                    [alt]="location.alt">
+                  </app-card>
+                </div>
+              </ion-col>
+            }
+          } @empty {
+            <div class="empty-state-container">
+              <p>No se encontraron ubicaciones que coincidan con tu búsqueda.</p>
             </div>
-            <div class="featured-details">
-              <h3 class="featured-card-title">{{ location.title }}</h3>
-              <p class="featured-card-description">{{ location.content }}</p>
-              <button class="featured-action-btn">Ver Detalles</button>
-            </div>
-          </div>
-        } @else {
-          <!-- Standard Cards -->
-          <app-card
-            class="bento-card-standard"
-            (click)="viewLocationDetails(location.id)"
-            [title]="location.title"
-            [subtitle]="location.subtitle"
-            [content]="location.content"
-            [image]="location.imagePath | simpsonsImageUrl"
-            [alt]="location.alt">
-          </app-card>
-        }
-      } @empty {
-        <div class="locations-empty-state">
-          <ion-spinner name="crescent" color="primary"></ion-spinner>
-          <p>No se encontraron ubicaciones...</p>
-        </div>
-      }
-    </div>
+          }
+        </ion-row>
+      </ion-grid>
 
-    <!-- Infinite Scroll container -->
-    <ion-infinite-scroll (ionInfinite)="loadNextPage($event)">
-      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más ubicaciones...">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-
+      <!-- Pagination Component -->
+      <app-pagination
+        [currentPage]="locationService.currentPage()"
+        [hasMore]="locationService.hasMore()"
+        (pageChange)="locationService.goToPage($event)">
+      </app-pagination>
+    }
   </main>
 </ion-content>

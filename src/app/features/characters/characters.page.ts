@@ -1,33 +1,54 @@
-import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Router, RouterLink } from '@angular/router';
-import { IonContent, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonSpinner, IonButton } from '@ionic/angular/standalone';
-import { map } from 'rxjs/operators';
+import { Component, OnInit, inject, computed } from '@angular/core';
+import { Router } from '@angular/router';
+import {
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol
+} from '@ionic/angular/standalone';
 import { CardComponent } from '../../shared/components/card/card.component';
-import { SimpsonsImageUrlPipe } from '../../shared/pipes/image-url.pipe';
-import { GetCharactersUseCase } from '../../core/application/use-cases/get-characters.usecase';
+import { SearchBarComponent } from '../../shared/components/search-bar/search-bar.component';
+import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
+import { ErrorStateComponent } from '../../shared/components/error-state/error-state.component';
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
+import { HeaderComponent } from '../../shared/components/header/header.component';
+import { CharacterService } from '../../core/application/services/character.service';
 import { CharactersPresenter } from './characters.presenter';
+import { SimpsonsImageUrlPipe } from '../../shared/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-characters',
   templateUrl: './characters.page.html',
   styleUrls: ['./characters.page.scss'],
   standalone: true,
-  imports: [RouterLink, CardComponent, IonContent, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonSpinner, IonButton, SimpsonsImageUrlPipe],
+  imports: [
+    CardComponent,
+    SearchBarComponent,
+    LoadingSpinnerComponent,
+    ErrorStateComponent,
+    PaginationComponent,
+    HeaderComponent,
+    SimpsonsImageUrlPipe,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol
+  ],
 })
-export class CharactersPage {
-  private readonly getCharactersUseCase = inject(GetCharactersUseCase);
-  private readonly presenter = inject(CharactersPresenter);
+export class CharactersPage implements OnInit {
   private readonly router = inject(Router);
+  private readonly presenter = inject(CharactersPresenter);
+  public readonly characterService = inject(CharacterService);
 
-  public viewCharacterDetails(id: number) {
-    this.router.navigate(['/main/characters', id]);
+  public readonly characters = computed(() => 
+    this.presenter.toCardViewModels(this.characterService.filteredCharacters())
+  );
+
+  ngOnInit(): void {
+    this.characterService.loadInitialPage();
   }
 
-  public readonly characters = toSignal(
-    this.getCharactersUseCase.execute().pipe(
-      map((characters) => this.presenter.toCardViewModels(characters))
-    ),
-    { initialValue: [] }
-  );
+  public viewCharacterDetails(id: number): void {
+    this.router.navigate(['/main/characters', id]);
+  }
 }

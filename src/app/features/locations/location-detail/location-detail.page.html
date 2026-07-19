@@ -1,38 +1,10 @@
-<ion-header [translucent]="true">
-  <ion-toolbar class="detail-toolbar">
-    <ion-buttons slot="start">
-      <ion-button routerLink="/main/locations">
-        <span class="material-symbols-outlined header-back-icon">arrow_back</span>
-      </ion-button>
-    </ion-buttons>
-    
-    <h1 class="toolbar-brand-title">
-      @if (location()) {
-        {{ location()!.name }}
-      } @else {
-        Detalle
-      }
-    </h1>
-    
-    <ion-buttons slot="end">
-      <ion-button (click)="shareLocation()">
-        <span class="material-symbols-outlined header-share-icon">share</span>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header [title]="location() ? location()!.name : 'Detalle'" [showBackButton]="true"></app-header>
 
 <ion-content [fullscreen]="true" class="locations-content-container">
   @if (isLoading()) {
-    <div class="detail-loading-wrapper">
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
-      <p>Cargando información de la ubicación...</p>
-    </div>
+    <app-loading-spinner message="Cargando información de la ubicación..."></app-loading-spinner>
   } @else if (error()) {
-    <div class="detail-error-wrapper">
-      <p class="error-msg">{{ error() }}</p>
-      <button class="btn-retry" routerLink="/main/locations">Volver a ubicaciones</button>
-    </div>
+    <app-error-state [message]="error()!" buttonText="Volver a ubicaciones" (retry)="goBack()"></app-error-state>
   } @else if (location()) {
     <main class="locations-main-layout max-w-container-max mx-auto pb-24">
 

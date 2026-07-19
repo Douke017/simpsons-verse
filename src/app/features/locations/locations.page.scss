@@ -91,28 +91,15 @@
   }
 }
 
-/* Bento Grid System */
-.locations-bento-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(12, 1fr);
-  }
-}
-
-.bento-card-standard {
-  grid-column: span 1;
-
-  @media (min-width: 768px) {
-    grid-column: span 4;
-  }
+/* Bento Grid System via Ionic Grid */
+.card-grid-padding {
+  padding: 8px;
+  height: 100%;
 }
 
 /* Bento Featured Card Styles */
 .bento-card-featured {
-  grid-column: span 1;
+  height: 100%;
   background: var(--color-surface-container-low, #1c1b1b);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
@@ -125,10 +112,6 @@
   &:hover {
     border-color: rgba(254, 212, 29, 0.4);
     transform: translateY(-2px);
-  }
-
-  @media (min-width: 768px) {
-    grid-column: span 8;
   }
 
   .featured-image-wrapper {
@@ -220,15 +203,11 @@
   }
 }
 
-.locations-empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  grid-column: span 12;
-  height: 240px;
-  color: #737373;
-  gap: 12px;
-  font-size: 0.9rem;
-  font-weight: 500;
+.empty-state-container {
+  width: 100%;
+  text-align: center;
+  padding: 48px 16px;
+  color: #8c8c8c;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
 }

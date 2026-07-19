@@ -1,29 +1,37 @@
-.characters-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+.characters-content-container {
+  --background: #000000;
+  --color: #ffffff;
+}
+
+.characters-main-layout {
   padding: 16px;
+  padding-bottom: 96px;
+}
 
-  @media (min-width: 576px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.characters-search-section {
+  margin-bottom: 32px;
+  text-align: center;
 
-  @media (min-width: 992px) {
-    grid-template-columns: repeat(3, 1fr);
+  .font-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    color: #fed41d;
+    font-size: 2.2rem;
+    margin-top: 8px;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
   }
 }
 
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 120px);
-  color: var(--ion-color-step-600);
-  gap: 12px;
+.card-grid-padding {
+  padding: 8px;
+}
 
-  p {
-    font-size: 1rem;
-    font-weight: 500;
-  }
+.empty-state-container {
+  width: 100%;
+  text-align: center;
+  padding: 48px 16px;
+  color: #8c8c8c;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
 }

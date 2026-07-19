@@ -7,7 +7,7 @@ import { CHARACTER_REPOSITORY, CharacterRepository } from '../../domain/ports/ch
 export class GetCharactersUseCase {
   constructor(@Inject(CHARACTER_REPOSITORY) private readonly repository: CharacterRepository) {}
 
-  execute(): Observable<Character[]> {
-    return this.repository.getCharacters();
+  execute(page?: number): Observable<Character[]> {
+    return this.repository.getCharacters(page);
   }
 }

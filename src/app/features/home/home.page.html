@@ -1,16 +1,4 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <h1 class="toolbar-brand-title"><span>Springfield</span> Explorer</h1>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/main/characters">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header title="Simpsons-Verse"></app-header>
 
 <ion-content [fullscreen]="true" class="home-content-container">
   <main class="main-layout pb-24">
@@ -32,7 +20,13 @@
               <img [src]="character.portraitPath | simpsonsImageUrl" [alt]="character.name" class="slide-image" />
               <div class="hero-gradient">
                 <h3 class="slide-title">{{ character.name }}</h3>
-                <p class="slide-subtitle">{{ character.occupation || character.status }}</p>
+                <p class="slide-subtitle">
+                  {{ 
+                    character.occupation ? character.occupation : 
+                    (character.status === 'Alive' ? 'Vivo' : 
+                     character.status === 'Deceased' ? 'Fallecido' : 'Desconocido') 
+                  }}
+                </p>
               </div>
             </div>
           </div>
@@ -107,7 +101,7 @@
             <div class="episode-image-wrapper">
               <img [src]="episode.imagePath | simpsonsImageUrl" [alt]="episode.name" class="episode-image" />
               <div class="episode-tint-overlay"></div>
-              <span class="episode-code-badge">S{{ episode.season }} E{{ episode.episodeNumber }}</span>
+              <span class="episode-code-badge">Temp. {{ episode.season }} - Ep. {{ episode.episodeNumber }}</span>
             </div>
             <h3 class="episode-card-title">{{ episode.name }}</h3>
             <p class="episode-card-synopsis">{{ episode.synopsis }}</p>

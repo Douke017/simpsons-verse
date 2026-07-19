@@ -1,0 +1,31 @@
+ion-toolbar {
+  --background: #000000 !important;
+  --color: #fed41d !important;
+  --border-style: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.header-title {
+  text-align: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+  color: #fed41d;
+  --color: #fed41d;
+}
+
+.header-back-icon {
+  color: #fed41d;
+  font-size: 1.5rem;
+}
+
+.header-menu-btn {
+  --color: #fed41d;
+  color: #fed41d;
+}
+
+.header-action-btn {
+  --color: #fed41d;
+}

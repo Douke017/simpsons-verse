@@ -1,17 +1,14 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import {
-  IonContent,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonSpinner,
-  IonButton
-} from '@ionic/angular/standalone';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { IonContent } from '@ionic/angular/standalone';
 import { GetCharacterByIdUseCase } from '../../../core/application/use-cases/get-character-by-id.usecase';
 import { Character } from '../../../core/domain/interfaces/character.interface';
 import { SimpsonsImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
 import { calculateAge } from '../../../shared/utils/age.util';
+import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
+import { ErrorStateComponent } from '../../../shared/components/error-state/error-state.component';
 
 @Component({
   selector: 'app-character-detail',
@@ -19,19 +16,17 @@ import { calculateAge } from '../../../shared/utils/age.util';
   styleUrls: ['./character-detail.page.scss'],
   standalone: true,
   imports: [
-    RouterLink,
     IonContent,
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonSpinner,
-    IonButton,
-    SimpsonsImageUrlPipe
+    SimpsonsImageUrlPipe,
+    HeaderComponent,
+    LoadingSpinnerComponent,
+    ErrorStateComponent
   ],
 })
 export class CharacterDetailPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly getCharacterByIdUseCase = inject(GetCharacterByIdUseCase);
+  private readonly location = inject(Location);
 
   // Character details signals
   public readonly character = signal<Character | null>(null);
@@ -121,12 +116,16 @@ export class CharacterDetailPage implements OnInit {
     }
   }
 
+  public goBack(): void {
+    this.location.back();
+  }
+
   public shareCharacter(): void {
     const char = this.character();
     if (char && navigator.share) {
       navigator.share({
-        title: `${char.name} - Springfield Explorer`,
-        text: `¡Mira a ${char.name} en Springfield Explorer!`,
+        title: `${char.name} - SimpsonsVerse`,
+        text: `¡Mira a ${char.name} en SimpsonsVerse!`,
         url: window.location.href
       }).catch(() => {});
     }

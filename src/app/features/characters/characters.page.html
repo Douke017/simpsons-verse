@@ -1,40 +1,58 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <h1 class="toolbar-brand-title"><span>Springfield</span> Explorer</h1>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/main/characters">
-        <span class="material-symbols-outlined">search</span>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header title="Personajes"></app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="characters-content-container">
+  <main class="characters-main-layout max-w-container-max mx-auto pb-24">
 
-  <div class="characters-grid">
-    @for (character of characters(); track character.id) {
-      <app-card
-        (click)="viewCharacterDetails(character.id)"
-        [title]="character.title"
-        [subtitle]="character.subtitle"
-        [content]="character.content"
-        [age]="character.age"
-        [birthdate]="character.birthdate"
-        [gender]="character.gender"
-        [occupation]="character.occupation"
-        [status]="character.status"
-        [image]="character.portraitPath | simpsonsImageUrl"
-        [alt]="character.alt">
-      </app-card>
-    } @empty {
-      <div class="loading-container">
-        <ion-spinner name="crescent" color="primary"></ion-spinner>
-        <p>Cargando personajes...</p>
-      </div>
+    <!-- Search Section -->
+    <section class="characters-search-section">
+      <app-search-bar
+        [value]="characterService.searchQuery()"
+        (queryChange)="characterService.setSearchQuery($event)"
+        placeholder="Busca personajes por nombre u ocupación...">
+      </app-search-bar>
+    </section>
+
+    <!-- State Indicators -->
+    @if (characterService.isLoading() && characterService.charactersList().length === 0) {
+      <app-loading-spinner message="Cargando Springfield characters..."></app-loading-spinner>
+    } @else if (characterService.error()) {
+      <app-error-state [message]="characterService.error()!" (retry)="characterService.loadInitialPage()"></app-error-state>
+    } @else {
+      <!-- Native Ionic Grid for Responsive Layout scaling -->
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          @for (character of characters(); track character.id) {
+            <ion-col size="12" size-md="6" size-lg="4" class="ion-no-padding">
+              <div class="card-grid-padding">
+                <app-card
+                  (click)="viewCharacterDetails(character.id)"
+                  [title]="character.title"
+                  [subtitle]="character.subtitle"
+                  [content]="character.content"
+                  [age]="character.age"
+                  [birthdate]="character.birthdate"
+                  [gender]="character.gender"
+                  [occupation]="character.occupation"
+                  [status]="character.status"
+                  [image]="character.portraitPath | simpsonsImageUrl"
+                  [alt]="character.alt">
+                </app-card>
+              </div>
+            </ion-col>
+          } @empty {
+            <div class="empty-state-container">
+              <p>No se encontraron personajes que coincidan con tu búsqueda.</p>
+            </div>
+          }
+        </ion-row>
+      </ion-grid>
+
+      <!-- Pagination Component -->
+      <app-pagination
+        [currentPage]="characterService.currentPage()"
+        [hasMore]="characterService.hasMore()"
+        (pageChange)="characterService.goToPage($event)">
+      </app-pagination>
     }
-  </div>
+  </main>
 </ion-content>
-

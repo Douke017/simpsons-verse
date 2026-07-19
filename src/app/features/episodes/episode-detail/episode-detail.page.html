@@ -1,32 +1,10 @@
-<ion-header [translucent]="true">
-  <ion-toolbar class="detail-toolbar">
-    <ion-buttons slot="start">
-      <ion-button routerLink="/main/episodes">
-        <span class="material-symbols-outlined header-back-icon">arrow_back</span>
-      </ion-button>
-    </ion-buttons>
-    
-    <h1 class="toolbar-brand-title">
-      @if (episode()) {
-        {{ episode()!.name }}
-      } @else {
-        Detalle
-      }
-    </h1>
-  </ion-toolbar>
-</ion-header>
+<app-header [title]="episode() ? episode()!.name : 'Detalle'" [showBackButton]="true"></app-header>
 
 <ion-content [fullscreen]="true" class="episodes-content-container">
   @if (isLoading()) {
-    <div class="detail-loading-wrapper">
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
-      <p>Cargando información del episodio...</p>
-    </div>
+    <app-loading-spinner message="Cargando información del episodio..."></app-loading-spinner>
   } @else if (error()) {
-    <div class="detail-error-wrapper">
-      <p class="error-msg">{{ error() }}</p>
-      <button class="btn-retry" routerLink="/main/episodes">Volver a episodios</button>
-    </div>
+    <app-error-state [message]="error()!" buttonText="Volver a episodios" (retry)="goBack()"></app-error-state>
   } @else if (episode()) {
     <main class="episodes-main-layout max-w-container-max mx-auto pb-24">
 
@@ -47,73 +25,70 @@
         </div>
       </section>
 
-      <!-- Content Grid: Details Column + Sidebar Column -->
-      <div class="details-content-grid">
-        
-        <!-- Left Column: Synopsis & Primary Action -->
-        <div class="details-left-column">
-          <div class="synopsis-section">
-            <h3 class="section-heading-indicator">Sinopsis</h3>
-            <p class="synopsis-text leading-relaxed">
-              {{ episode()!.synopsis }}
-            </p>
-          </div>
-
-          <!-- Play & Action Buttons -->
-          <div class="primary-actions-row">
-            <button class="btn-primary-action">
-              <span class="material-symbols-outlined btn-icon-fill">play_arrow</span>
-              Ver Episodio
-            </button>
-            <button class="btn-secondary-action">
-              <span class="material-symbols-outlined">add</span>
-              Agregar a Lista
-            </button>
-          </div>
-        </div>
-
-        <!-- Right Column: Featured Characters & Rating Stats -->
-        <div class="details-right-column">
+      <!-- Content Grid: Details Column + Sidebar Column via Native Ionic Grid -->
+      <ion-grid class="ion-no-padding">
+        <ion-row>
           
-          <!-- Featured Characters list -->
-          <div class="sidebar-glass-card">
-            <h3 class="sidebar-card-label">Personajes Destacados</h3>
-            
-            <div class="characters-chips-list">
-              @for (char of featuredCharacters(); track char.name) {
-                <div class="character-chip-row group">
-                  <div class="character-avatar-wrapper">
-                    <img [src]="char.image | simpsonsImageUrl" [alt]="char.name" class="character-avatar-img" />
+          <!-- Left Column: Synopsis & Primary Action -->
+          <ion-col size="12" size-lg="7" class="ion-no-padding">
+            <div class="card-grid-padding">
+              <div class="synopsis-section">
+                <h3 class="section-heading-indicator">Sinopsis</h3>
+                <p class="synopsis-text leading-relaxed">
+                  {{ episode()!.synopsis }}
+                </p>
+              </div>
+
+
+            </div>
+          </ion-col>
+
+          <!-- Right Column: Featured Characters & Rating Stats -->
+          <ion-col size="12" size-lg="5" class="ion-no-padding">
+            <div class="card-grid-padding">
+              
+              <!-- Featured Characters list -->
+              <div class="sidebar-glass-card">
+                <h3 class="sidebar-card-label">Personajes Destacados</h3>
+                
+                <div class="characters-chips-list">
+                  @for (char of featuredCharacters(); track char.name) {
+                    <div class="character-chip-row group">
+                      <div class="character-avatar-wrapper">
+                        <img [src]="char.image | simpsonsImageUrl" [alt]="char.name" class="character-avatar-img" />
+                      </div>
+                      <div class="character-meta">
+                        <p class="character-name-title">{{ char.name }}</p>
+                        <p class="character-role-badge">{{ char.role }}</p>
+                      </div>
+                    </div>
+                  } @empty {
+                    <div class="character-loading-spinner">
+                      <ion-spinner name="crescent" color="primary"></ion-spinner>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Rating & Production details -->
+              <div class="sidebar-glass-card">
+                <div class="production-stats-grid">
+                  <div class="stat-cell">
+                    <p class="stat-label">Calificación</p>
+                    <p class="stat-value-rating">{{ getRating(episode()!.id) }}/10</p>
                   </div>
-                  <div class="character-meta">
-                    <p class="character-name-title">{{ char.name }}</p>
-                    <p class="character-role-badge">{{ char.role }}</p>
+                  <div class="stat-cell text-right">
+                    <p class="stat-label">Escritor</p>
+                    <p class="stat-value-writer">{{ getWriter(episode()!.id) }}</p>
                   </div>
                 </div>
-              } @empty {
-                <div class="character-loading-spinner">
-                  <ion-spinner name="crescent" color="primary"></ion-spinner>
-                </div>
-              }
-            </div>
-          </div>
-
-          <!-- Rating & Production details -->
-          <div class="sidebar-glass-card">
-            <div class="production-stats-grid">
-              <div class="stat-cell">
-                <p class="stat-label">Calificación</p>
-                <p class="stat-value-rating">{{ getRating(episode()!.id) }}/10</p>
               </div>
-              <div class="stat-cell text-right">
-                <p class="stat-label">Escritor</p>
-                <p class="stat-value-writer">{{ getWriter(episode()!.id) }}</p>
-              </div>
-            </div>
-          </div>
 
-        </div>
-      </div>
+            </div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
 
       <!-- Behind the Scenes Bento grid -->
       <section class="behind-scenes-section">
