@@ -5,16 +5,20 @@ import {
   IonSpinner,
   IonGrid,
   IonRow,
-  IonCol
+  IonCol,
+  IonIcon
 } from '@ionic/angular/standalone';
 import { SimpsonsImageUrlPipe } from '../../shared/pipes/image-url.pipe';
 import { EpisodeService } from '../../core/application/services/episode.service';
+import { FavoritesService } from '../../core/application/services/favorites.service';
 import { EpisodesPresenter } from './episodes.presenter';
 import { EpisodeCardViewModel } from './episode-card.view-model';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 import { ErrorStateComponent } from '../../shared/components/error-state/error-state.component';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import { HeaderComponent } from '../../shared/components/header/header.component';
+import { addIcons } from 'ionicons';
+import { heart, heartOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-episodes',
@@ -27,6 +31,7 @@ import { HeaderComponent } from '../../shared/components/header/header.component
     IonGrid,
     IonRow,
     IonCol,
+    IonIcon,
     SimpsonsImageUrlPipe,
     LoadingSpinnerComponent,
     ErrorStateComponent,
@@ -38,6 +43,7 @@ export class EpisodesPage implements OnInit {
   private readonly router = inject(Router);
   private readonly presenter = inject(EpisodesPresenter);
   public readonly episodeService = inject(EpisodeService);
+  public readonly favoritesService = inject(FavoritesService);
 
   // Mapped list of episodes view models
   public readonly episodes = computed(() => 
@@ -49,6 +55,10 @@ export class EpisodesPage implements OnInit {
     const domainEp = this.episodeService.selectedEpisode();
     return domainEp ? this.presenter.toCardViewModels([domainEp])[0] : null;
   });
+
+  constructor() {
+    addIcons({ heart, heartOutline });
+  }
 
   ngOnInit() {
     this.episodeService.loadInitialPage();

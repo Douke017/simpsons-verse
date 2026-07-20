@@ -4,6 +4,13 @@
     @if (status()) {
       <span class="status-badge" [class]="status().toLowerCase()">{{ status() }}</span>
     }
+    <!-- Floating Favorite Button -->
+    <button 
+      class="card-favorite-btn" 
+      [class.is-fav]="isFavorite()" 
+      (click)="onFavoriteClick($event)">
+      <ion-icon [name]="isFavorite() ? 'heart' : 'heart-outline'"></ion-icon>
+    </button>
   </div>
   <ion-card-header>
     <ion-card-title>{{ title() | upperCase }}</ion-card-title>
@@ -42,4 +49,3 @@
     }
   </ion-card-content>
 </ion-card>
-

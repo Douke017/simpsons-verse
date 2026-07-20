@@ -561,3 +561,46 @@
   gap: 16px;
   color: #8c8c8c;
 }
+
+.episode-favorite-btn {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(26, 26, 26, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  z-index: 20;
+  transition: background-color 0.2s ease, transform 0.15s ease, color 0.2s ease;
+
+  ion-icon {
+    font-size: 1.05rem;
+  }
+
+  &:hover {
+    background: rgba(26, 26, 26, 0.9);
+    color: #fed41d;
+    transform: scale(1.08);
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
+
+  &.is-fav {
+    color: #fed41d;
+    background: rgba(254, 212, 29, 0.15);
+    border-color: rgba(254, 212, 29, 0.4);
+    
+    &:hover {
+      background: rgba(254, 212, 29, 0.25);
+    }
+  }
+}

@@ -52,6 +52,13 @@
                        <img [src]="location.imagePath | simpsonsImageUrl" [alt]="location.alt" class="featured-image" />
                        <div class="featured-overlay"></div>
                        <span class="featured-badge">{{ location.subtitle }}</span>
+                       <!-- Floating Favorite Button for Featured Card -->
+                       <button 
+                         class="featured-favorite-btn" 
+                         [class.is-fav]="favoritesService.isLocationFavorite(location.id)" 
+                         (click)="favoritesService.toggleLocationFavorite(location.id); $event.stopPropagation()">
+                         <ion-icon [name]="favoritesService.isLocationFavorite(location.id) ? 'heart' : 'heart-outline'"></ion-icon>
+                       </button>
                     </div>
                     <div class="featured-details">
                        <h3 class="featured-card-title">{{ location.title }}</h3>
@@ -72,7 +79,9 @@
                     [subtitle]="location.subtitle"
                     [content]="location.content"
                     [image]="location.imagePath | simpsonsImageUrl"
-                    [alt]="location.alt">
+                    [alt]="location.alt"
+                    [isFavorite]="favoritesService.isLocationFavorite(location.id)"
+                    (favoriteToggle)="favoritesService.toggleLocationFavorite(location.id)">
                   </app-card>
                 </div>
               </ion-col>

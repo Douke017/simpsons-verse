@@ -136,6 +136,13 @@
                     <div class="card-thumbnail-wrapper">
                       <img [src]="episode.imagePath | simpsonsImageUrl" [alt]="episode.alt" class="card-thumbnail-img" />
                       <div class="card-badge-overlay">{{ episode.subtitle }}</div>
+                      <!-- Floating Favorite Button for Episode Card -->
+                      <button 
+                        class="episode-favorite-btn" 
+                        [class.is-fav]="favoritesService.isEpisodeFavorite(episode.id)" 
+                        (click)="favoritesService.toggleEpisodeFavorite(episode.id); $event.stopPropagation()">
+                        <ion-icon [name]="favoritesService.isEpisodeFavorite(episode.id) ? 'heart' : 'heart-outline'"></ion-icon>
+                      </button>
                     </div>
                     <div class="card-details-info">
                       <h4 class="card-title-text">{{ episode.title }}</h4>

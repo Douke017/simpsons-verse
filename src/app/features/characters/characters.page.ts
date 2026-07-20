@@ -13,6 +13,7 @@ import { ErrorStateComponent } from '../../shared/components/error-state/error-s
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { CharacterService } from '../../core/application/services/character.service';
+import { FavoritesService } from '../../core/application/services/favorites.service';
 import { CharactersPresenter } from './characters.presenter';
 import { SimpsonsImageUrlPipe } from '../../shared/pipes/image-url.pipe';
 
@@ -39,6 +40,7 @@ export class CharactersPage implements OnInit {
   private readonly router = inject(Router);
   private readonly presenter = inject(CharactersPresenter);
   public readonly characterService = inject(CharacterService);
+  public readonly favoritesService = inject(FavoritesService);
 
   public readonly characters = computed(() => 
     this.presenter.toCardViewModels(this.characterService.filteredCharacters())

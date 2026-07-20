@@ -35,7 +35,9 @@
                   [occupation]="character.occupation"
                   [status]="character.status"
                   [image]="character.portraitPath | simpsonsImageUrl"
-                  [alt]="character.alt">
+                  [alt]="character.alt"
+                  [isFavorite]="favoritesService.isCharacterFavorite(character.id)"
+                  (favoriteToggle)="favoritesService.toggleCharacterFavorite(character.id)">
                 </app-card>
               </div>
             </ion-col>
