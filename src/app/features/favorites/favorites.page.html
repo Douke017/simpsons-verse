@@ -1,0 +1,52 @@
+<app-header title="Favoritos"></app-header>
+
+<ion-content [fullscreen]="true" class="favorites-content-container">
+  <main class="favorites-main-layout max-w-container-max mx-auto pb-24">
+    
+    <!-- Search Section -->
+    <section class="favorites-search-section">
+      <h2 class="font-headline-lg font-heading explorer-title">Mis Favoritos</h2>
+      <app-search-bar 
+        placeholder="Buscar en mis favoritos..." 
+        (queryChange)="searchQuery.set($event)">
+      </app-search-bar>
+    </section>
+
+    <!-- Content State Management -->
+    @if (loading() && favoritesItems().length === 0) {
+      <app-loading-spinner message="Cargando tus favoritos..."></app-loading-spinner>
+    } @else if (error()) {
+      <app-error-state [message]="error()!" (retry)="error.set(null)"></app-error-state>
+    } @else {
+      <!-- Native Ionic Grid for Responsive Layout scaling -->
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          @for (item of filteredFavorites(); track item.id + '-' + item.type) {
+            <ion-col size="12" size-md="6" size-lg="4" class="ion-no-padding">
+              <div class="card-grid-padding">
+                <app-card
+                  [title]="item.title"
+                  [subtitle]="item.type === 'character' ? 'PERSONAJE • ' + item.subtitle : (item.type === 'episode' ? 'EPISODIO • ' + item.subtitle : 'UBICACIÓN • ' + item.subtitle)"
+                  [content]="item.content"
+                  [image]="item.image | simpsonsImageUrl"
+                  [alt]="item.title"
+                  [isFavorite]="true"
+                  (favoriteToggle)="removeFavorite(item)"
+                  (click)="viewDetails(item)">
+                </app-card>
+              </div>
+            </ion-col>
+          } @empty {
+            <div class="empty-state-container">
+              @if (searchQuery()) {
+                <p>No se encontraron favoritos que coincidan con "{{ searchQuery() }}".</p>
+              } @else {
+                <p>Aún no tienes elementos en favoritos. Ve a Personajes, Episodios o Ubicaciones y selecciona algunos.</p>
+              }
+            </div>
+          }
+        </ion-row>
+      </ion-grid>
+    }
+  </main>
+</ion-content>

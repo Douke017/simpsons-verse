@@ -3,6 +3,7 @@ import { characterProviders } from './features/characters/characters.providers';
 import { episodeProviders } from './features/episodes/episodes.providers';
 import { locationProviders } from './features/locations/locations.providers';
 import { homeProviders } from './features/home/home.providers';
+import { favoritesProviders } from './features/favorites/favorites.providers';
 
 export const routes: Routes = [
   {
@@ -61,6 +62,11 @@ export const routes: Routes = [
             loadComponent: () => import('./features/locations/location-detail/location-detail.page').then(m => m.LocationDetailPage),
           }
         ]
+      },
+      {
+        path: 'favorites',
+        providers: favoritesProviders,
+        loadComponent: () => import('./features/favorites/favorites.page').then(m => m.FavoritesPage),
       },
     ],
   },

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { IonList, IonListHeader, IonRouterOutlet, IonMenuToggle, IonLabel, IonSplitPane, IonIcon, IonMenu, IonContent, IonItem } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, person, play, map } from 'ionicons/icons';
+import { home, person, play, map, heart } from 'ionicons/icons';
 
 @Component({
   selector: 'app-main',
@@ -16,12 +16,13 @@ export class MainPage {
     { title: 'Inicio', url: '/main/home', icon: 'home' },
     { title: 'Personajes', url: '/main/characters', icon: 'person' },
     { title: 'Episodios', url: '/main/episodes', icon: 'play' },
-    { title: 'Ubicaciones', url: '/main/locations', icon: 'map' }
+    { title: 'Ubicaciones', url: '/main/locations', icon: 'map' },
+    { title: 'Favoritos', url: '/main/favorites', icon: 'heart' }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   constructor() {
-    addIcons({ home, person, play, map });
+    addIcons({ home, person, play, map, heart });
   }
 
   ngOnInit() {

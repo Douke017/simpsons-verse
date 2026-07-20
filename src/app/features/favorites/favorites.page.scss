@@ -1,0 +1,40 @@
+.favorites-content-container {
+  --background: #131313;
+}
+
+.favorites-main-layout {
+  padding: 16px 20px 48px;
+}
+
+.favorites-search-section {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.explorer-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 20px;
+  letter-spacing: -0.02em;
+}
+
+.card-grid-padding {
+  padding: 8px;
+  height: 100%;
+}
+
+.empty-state-container {
+  width: 100%;
+  text-align: center;
+  padding: 64px 16px;
+  color: #8c8c8c;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.01);
+  margin: 16px 8px;
+}
